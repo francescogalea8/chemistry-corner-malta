@@ -14,14 +14,7 @@
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="#top" aria-label="Chemistry Corner Malta home">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48" role="img">
-            <circle cx="24" cy="24" r="4"></circle>
-            <ellipse cx="24" cy="24" rx="18" ry="7"></ellipse>
-            <ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)"></ellipse>
-            <ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(120 24 24)"></ellipse>
-          </svg>
-        </span>
+        <span class="brand-mark" aria-hidden="true">CC</span>
         <span><strong>Chemistry Corner</strong><small>Malta</small></span>
       </a>
 
@@ -35,6 +28,7 @@
         <a href="#approach">Approach</a>
         <a href="#resources">Resources</a>
         <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
         <a class="nav-cta" href="#contact">Enquire</a>
       </nav>
     </div>
@@ -168,15 +162,95 @@
       </div>
     </section>
 
+    <section class="section faq" id="faq">
+      <div class="container faq-layout">
+        <div class="faq-heading">
+          <p class="eyebrow dark"><span></span> Frequently asked questions</p>
+          <h2>Everything parents and students need to know.</h2>
+          <p>Still unsure about something? Send a WhatsApp enquiry and ask directly.</p>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>Where are lessons held?<span aria-hidden="true">+</span></summary>
+            <p>In-person lessons are held at Mathematics &amp; Beyond, 214 Triq id-Duluri, Tal-Pietà, Malta. The exact room is confirmed with the class information.</p>
+          </details>
+          <details>
+            <summary>Are lessons available online?<span aria-hidden="true">+</span></summary>
+            <p>Some sessions may be offered online depending on the class and arrangement. Send an enquiry to check the options currently available.</p>
+          </details>
+          <details>
+            <summary>How many students are in each class?<span aria-hidden="true">+</span></summary>
+            <p>Classes are intentionally kept small—generally up to five students—so explanations, feedback and practice can remain focused.</p>
+          </details>
+          <details>
+            <summary>Which years do you teach?<span aria-hidden="true">+</span></summary>
+            <p>Support is available for Year 9, Year 10 and Year 11 O Level chemistry students, including a From Scratch pathway for students rebuilding their foundations.</p>
+          </details>
+          <details>
+            <summary>Are notes and worksheets included?<span aria-hidden="true">+</span></summary>
+            <p>Yes. Relevant notes, worksheets, guided practice and exam-style questions are provided as part of the learning programme.</p>
+          </details>
+          <details>
+            <summary>How can parents enquire?<span aria-hidden="true">+</span></summary>
+            <p>Parents can call or send a WhatsApp message to +356 7963 7563. The enquiry form below prepares the WhatsApp message automatically.</p>
+          </details>
+          <details>
+            <summary>How does the credit and payment system work?<span aria-hidden="true">+</span></summary>
+            <p>Lessons operate using prepaid credit. Families top up the student’s account, and the lesson cost is deducted after each session. Credit can be topped up through Revolut or by cash, as arranged.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <section class="contact" id="contact">
-      <div class="container contact-inner">
-        <div>
+      <div class="container">
+        <div class="contact-heading">
           <p class="eyebrow light"><span></span> Chemistry Corner Malta</p>
           <h2>Ready to make chemistry clearer?</h2>
+          <p>Call directly or prepare a WhatsApp enquiry below.</p>
         </div>
-        <div class="contact-note">
-          <p>Enquiry and booking details will be added before the official launch.</p>
-          <span>Website preview · September 2026</span>
+
+        <div class="contact-grid">
+          <aside class="contact-card">
+            <span class="contact-label">Speak with Francesco</span>
+            <a class="phone-number" href="tel:+35679637563">+356 7963 7563</a>
+            <p>For class availability, tuition information or help choosing the right learning pathway.</p>
+            <div class="contact-actions">
+              <a class="button button-call" href="tel:+35679637563">Call now</a>
+              <a class="button button-whatsapp" href="https://wa.me/35679637563?text=Hello%20Chemistry%20Corner%20Malta%2C%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener">WhatsApp enquiry</a>
+            </div>
+          </aside>
+
+          <form class="enquiry-form" id="enquiry-form">
+            <div class="form-title">
+              <span>Quick enquiry</span>
+              <p>Complete the details and continue in WhatsApp.</p>
+            </div>
+            <div class="form-row">
+              <label>First name
+                <input type="text" name="firstName" autocomplete="given-name" required>
+              </label>
+              <label>Surname
+                <input type="text" name="surname" autocomplete="family-name" required>
+              </label>
+            </div>
+            <label>Student’s school year
+              <select name="schoolYear" required>
+                <option value="" selected disabled>Select a year or pathway</option>
+                <option>Year 9</option>
+                <option>Year 10</option>
+                <option>Year 11</option>
+                <option>From Scratch</option>
+                <option>General enquiry</option>
+              </select>
+            </label>
+            <label>Question or enquiry
+              <textarea name="question" rows="5" maxlength="800" placeholder="How can Chemistry Corner Malta help?" required></textarea>
+            </label>
+            <button class="button form-submit" type="submit">Send via WhatsApp <span aria-hidden="true">→</span></button>
+            <p class="privacy-note">Your details are not stored on this website. Submitting opens WhatsApp with your prepared message.</p>
+            <p class="form-status" id="form-status" aria-live="polite"></p>
+          </form>
         </div>
       </div>
     </section>
@@ -185,9 +259,7 @@
   <footer>
     <div class="container footer-inner">
       <a class="brand footer-brand" href="#top">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="4"></circle><ellipse cx="24" cy="24" rx="18" ry="7"></ellipse><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)"></ellipse><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(120 24 24)"></ellipse></svg>
-        </span>
+        <span class="brand-mark" aria-hidden="true">CC</span>
         <span><strong>Chemistry Corner</strong><small>Malta</small></span>
       </a>
       <p>© <span id="year">2026</span> Chemistry Corner Malta. All rights reserved.</p>
