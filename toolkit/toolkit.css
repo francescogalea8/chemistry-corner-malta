@@ -154,6 +154,8 @@ a.tool-card:hover, a.tool-card:focus-visible {
 .calculator-page-intro {
   padding: 56px 0 22px;
 }
+.calculator-page-intro .breadcrumbs { color: var(--muted); }
+.calculator-page-intro .breadcrumbs strong { color: var(--navy-800); }
 .calculator-page-intro .eyebrow { margin-bottom: 12px; }
 .calculator-page-intro h1 {
   max-width: 900px;
