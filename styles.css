@@ -157,6 +157,10 @@ h1 em { color: var(--teal-400); font-style: normal; }
 .mass-calculator select, .mass-calculator input { width: 100%; height: 54px; margin-bottom: 20px; padding: 0 15px; border: 1px solid rgba(255,255,255,.34); border-radius: 12px; outline: none; background: rgba(255,255,255,.97); color: var(--ink); font: inherit; }
 .mass-calculator input { font-size: 1.12rem; font-weight: 800; letter-spacing: .02em; }
 .mass-calculator select:focus, .mass-calculator input:focus { border-color: var(--gold-500); box-shadow: 0 0 0 4px rgba(255,220,61,.18); }
+.mass-type-guide { display: grid; grid-template-columns: 54px 1fr; gap: 14px; align-items: center; margin: -5px 0 24px; padding: 15px; border: 1px solid rgba(69,244,223,.32); border-radius: 15px; background: rgba(0,219,200,.1); }
+.mass-type-guide > span { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 13px; background: var(--teal-400); color: var(--navy-950); font-size: .82rem; font-weight: 900; }
+.mass-type-guide p { margin: 0; color: rgba(255,255,255,.78); font-size: .78rem; line-height: 1.5; }
+.mass-type-guide strong { color: var(--white); }
 .formula-help { margin: -8px 0 25px; color: rgba(255,255,255,.68); font-size: .78rem; line-height: 1.5; }
 .calculator-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .calculate-button { border: 0; cursor: pointer; background: var(--gold-500); color: var(--navy-950); font: inherit; }

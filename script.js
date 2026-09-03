@@ -72,10 +72,37 @@ const atomicMasses = Object.freeze({
 });
 
 const massTypeDetails = Object.freeze({
-  RAM: { name: 'Relative atomic mass', placeholder: 'For example: Fe', examples: ['Fe', 'Cl', 'Mg'] },
-  RMM: { name: 'Relative molecular mass', placeholder: 'For example: H2O', examples: ['H2O', 'CO2', 'H2SO4', 'C6H12O6'] },
-  RFM: { name: 'Relative formula mass', placeholder: 'For example: NaCl', examples: ['NaCl', 'Ca(OH)2', 'Al2(SO4)3', 'CuSO4·5H2O'] }
+  RAM: {
+    name: 'Relative atomic mass',
+    placeholder: 'For example: Fe',
+    examples: ['Fe', 'Cl', 'Mg'],
+    explanation: 'Relative atomic mass is the weighted mean mass of an atom of an element. Enter one element symbol, such as Fe, Cl or Mg.'
+  },
+  RMM: {
+    name: 'Relative molecular mass',
+    placeholder: 'For example: H2O',
+    examples: ['H2O', 'CO2', 'H2SO4', 'C6H12O6'],
+    explanation: 'Relative molecular mass is the total of the RAM values in one molecule. Use it for molecular covalent substances such as H2O and CO2.'
+  },
+  RFM: {
+    name: 'Relative formula mass',
+    placeholder: 'For example: NaCl',
+    examples: ['NaCl', 'Ca(OH)2', 'Al2(SO4)3', 'CuSO4·5H2O'],
+    explanation: 'Relative formula mass is the total of the RAM values in one formula unit. Use it for ionic compounds: the formula unit shows the simplest ratio of oppositely charged ions.'
+  }
 });
+
+const metalSymbols = new Set([
+  'Li', 'Be', 'Na', 'Mg', 'Al', 'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn',
+  'Ga', 'Rb', 'Sr', 'Zr', 'Mo', 'Ag', 'Cd', 'Sn', 'Cs', 'Ba', 'W', 'Pt', 'Au', 'Hg', 'Pb', 'Ra', 'U'
+]);
+
+class FormulaTypeError extends Error {
+  constructor(expectedType, message) {
+    super(message);
+    this.expectedType = expectedType;
+  }
+}
 
 const subscriptToNumber = Object.freeze({ '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9' });
 const numberToSubscript = Object.freeze({ '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉' });
@@ -158,6 +185,22 @@ function parseFormulaPart(part) {
   return multipliedCounts;
 }
 
+function classifyFormula(formula, counts) {
+  const entries = [...counts.entries()];
+  const networkCovalentFormulae = new Set(['SiO2', 'SiC', 'BN', 'B2O3']);
+  if (networkCovalentFormulae.has(formula)) return 'network-covalent';
+
+  if (entries.length === 1) {
+    const [symbol, count] = entries[0];
+    if (!metalSymbols.has(symbol) && count > 1) return 'molecular-covalent';
+    return 'atomic';
+  }
+
+  if (formula.includes('NH4')) return 'ionic';
+  if (entries.some(([symbol]) => metalSymbols.has(symbol))) return 'ionic';
+  return 'molecular-covalent';
+}
+
 function calculateRelativeMass(rawFormula, massType) {
   const formula = normaliseFormula(rawFormula);
   if (!formula) throw new Error('Enter an element symbol or chemical formula first.');
@@ -170,6 +213,22 @@ function calculateRelativeMass(rawFormula, massType) {
     const singleEntry = [...counts.entries()];
     if (singleEntry.length !== 1 || singleEntry[0][1] !== 1 || !/^[A-Z][a-z]?$/.test(formula)) {
       throw new Error('For RAM, enter one element symbol only, such as Fe, Cl or Mg.');
+    }
+  } else {
+    const formulaType = classifyFormula(formula, counts);
+    const shownFormula = displayFormula(formula);
+
+    if (formulaType === 'atomic') {
+      throw new FormulaTypeError('RAM', `${shownFormula} is being treated as an element rather than a compound. Use RAM, which describes the relative mass of an atom of an element.`);
+    }
+    if (formulaType === 'network-covalent') {
+      throw new FormulaTypeError(null, `${shownFormula} is a giant covalent substance and does not consist of separate molecules or oppositely charged ions. This calculator currently checks RMM for molecular covalent substances and RFM for ionic compounds.`);
+    }
+    if (massType === 'RFM' && formulaType === 'molecular-covalent') {
+      throw new FormulaTypeError('RMM', `${shownFormula} contains only non-metals, so it is treated as a molecular covalent substance. Use RMM: relative molecular mass is the total of the RAM values in one molecule.`);
+    }
+    if (massType === 'RMM' && formulaType === 'ionic') {
+      throw new FormulaTypeError('RFM', `${shownFormula} is treated as an ionic compound because it contains a metal or the ammonium ion. Use RFM: relative formula mass is the total of the RAM values in one formula unit. That formula unit shows the simplest ratio of oppositely charged ions.`);
     }
   }
 
@@ -226,10 +285,10 @@ function renderMassResult(result, massType, target) {
   target.replaceChildren(heading, table, total);
 }
 
-function renderMassError(message, target) {
+function renderMassError(message, target, expectedType = null) {
   const error = makeElement('div', 'calculator-error');
-  error.append(makeElement('strong', '', '!'));
-  error.append(makeElement('h3', '', 'Check the formula'));
+  error.append(makeElement('strong', '', expectedType || '!'));
+  error.append(makeElement('h3', '', expectedType ? `Use ${expectedType} instead` : 'Check the formula'));
   error.append(makeElement('p', '', message));
   target.replaceChildren(error);
 }
@@ -239,7 +298,17 @@ const massType = document.querySelector('#mass-type');
 const formulaInput = document.querySelector('#chemical-formula');
 const massResult = document.querySelector('#mass-result');
 const exampleButton = document.querySelector('#mass-example');
+const massTypeGuide = document.querySelector('#mass-type-guide');
 const examplePositions = { RAM: 0, RMM: 0, RFM: 0 };
+
+function updateMassTypeGuide() {
+  const selectedType = massType.value;
+  const typeBadge = makeElement('span', '', selectedType);
+  const explanation = makeElement('p');
+  explanation.append(makeElement('strong', '', massTypeDetails[selectedType].name));
+  explanation.append(document.createTextNode(` ${massTypeDetails[selectedType].explanation.replace(`${massTypeDetails[selectedType].name} `, '')}`));
+  massTypeGuide.replaceChildren(typeBadge, explanation);
+}
 
 massCalculator?.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -247,13 +316,14 @@ massCalculator?.addEventListener('submit', (event) => {
     const result = calculateRelativeMass(formulaInput.value, massType.value);
     renderMassResult(result, massType.value, massResult);
   } catch (error) {
-    renderMassError(error.message, massResult);
+    renderMassError(error.message, massResult, error.expectedType || null);
   }
 });
 
 massType?.addEventListener('change', () => {
   formulaInput.placeholder = massTypeDetails[massType.value].placeholder;
   formulaInput.value = '';
+  updateMassTypeGuide();
   formulaInput.focus();
 });
 

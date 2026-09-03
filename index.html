@@ -179,6 +179,10 @@
               <option value="RMM" selected>RMM — Relative molecular mass</option>
               <option value="RFM">RFM — Relative formula mass</option>
             </select>
+            <div class="mass-type-guide" id="mass-type-guide" aria-live="polite">
+              <span>RMM</span>
+              <p><strong>Relative molecular mass</strong> is the total of the RAM values in one molecule. Use it for molecular covalent substances such as H2O and CO2.</p>
+            </div>
 
             <label for="chemical-formula">Element symbol or chemical formula</label>
             <input id="chemical-formula" name="formula" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="For example: H2O" aria-describedby="formula-help" required>
@@ -198,7 +202,7 @@
             </div>
           </div>
         </div>
-        <p class="calculator-note"><strong>Remember:</strong> RAM, RMM and RFM are relative values, so they do not have units. Values are rounded to those commonly used at O Level.</p>
+        <p class="calculator-note"><strong>Remember:</strong> RAM, RMM and RFM are relative values, so they do not have units. The calculator checks compound type using standard O Level rules and uses commonly rounded atomic masses.</p>
       </div>
     </section>
 
