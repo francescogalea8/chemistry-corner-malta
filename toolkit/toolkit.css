@@ -1,0 +1,197 @@
+/* Toolkit subpages */
+.tool-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(69,244,223,.20), transparent 30rem),
+    linear-gradient(180deg, #eefefd 0, #fff 34rem);
+}
+.tool-page .site-header {
+  position: relative;
+  color: var(--white);
+  background: var(--navy-950);
+}
+.tool-page nav a[aria-current="page"] {
+  color: var(--gold-500);
+}
+.subpage-main { min-height: 70vh; }
+.toolkit-hero {
+  padding: 86px 0 56px;
+  color: var(--white);
+  background:
+    radial-gradient(circle at 82% 35%, rgba(0,219,200,.27), transparent 25rem),
+    linear-gradient(125deg, var(--navy-950), var(--navy-900));
+  overflow: hidden;
+}
+.toolkit-hero .container {
+  position: relative;
+}
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 24px;
+  color: rgba(255,255,255,.72);
+  font-size: .9rem;
+  font-weight: 700;
+}
+.breadcrumbs a { text-underline-offset: 4px; }
+.breadcrumbs strong { color: var(--gold-500); }
+.toolkit-hero h1 {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(2.65rem, 7vw, 5.7rem);
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+.toolkit-hero h1 em {
+  color: var(--gold-500);
+  font-family: Georgia, serif;
+  font-weight: 500;
+}
+.toolkit-hero-copy {
+  max-width: 670px;
+  margin: 24px 0 0;
+  color: rgba(255,255,255,.78);
+  font-size: 1.1rem;
+}
+.toolkit-symbols {
+  position: absolute;
+  right: 1rem;
+  bottom: -5.8rem;
+  display: grid;
+  grid-template-columns: repeat(2, 78px);
+  gap: 10px;
+  transform: rotate(5deg);
+  opacity: .72;
+}
+.toolkit-symbols span {
+  display: grid;
+  min-height: 72px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 18px;
+  background: rgba(255,255,255,.08);
+  color: var(--teal-400);
+  font-size: 1.25rem;
+  font-weight: 900;
+  backdrop-filter: blur(8px);
+}
+.toolkit-directory { padding: 72px 0 100px; }
+.directory-intro {
+  max-width: 680px;
+  margin-bottom: 34px;
+}
+.directory-intro h2 {
+  margin: 0 0 10px;
+  color: var(--navy-950);
+  font-size: clamp(1.75rem, 4vw, 2.7rem);
+  line-height: 1.12;
+}
+.directory-intro p { margin: 0; color: var(--muted); }
+.tool-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(250px, .6fr);
+  gap: 22px;
+}
+.tool-card {
+  position: relative;
+  display: flex;
+  min-height: 270px;
+  padding: 34px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  color: var(--ink);
+  background: var(--white);
+  box-shadow: 0 18px 50px rgba(4,31,45,.09);
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+a.tool-card:hover, a.tool-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--teal-500);
+  box-shadow: 0 24px 60px rgba(4,31,45,.14);
+}
+.tool-card.primary {
+  color: var(--white);
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+}
+.tool-card.muted-card {
+  color: var(--muted);
+  box-shadow: none;
+  background: rgba(255,255,255,.62);
+}
+.tool-card-icon {
+  display: grid;
+  width: 66px;
+  height: 66px;
+  place-items: center;
+  border-radius: 19px;
+  color: var(--navy-950);
+  background: var(--gold-500);
+  font-size: 1.18rem;
+  font-weight: 950;
+}
+.tool-card h2, .tool-card h3 {
+  margin: 28px 0 8px;
+  color: inherit;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.08;
+}
+.tool-card p { max-width: 600px; margin: 0; color: inherit; opacity: .78; }
+.tool-card-action {
+  display: inline-flex;
+  margin-top: 26px;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold-500);
+  font-weight: 900;
+}
+.muted-card .tool-card-action { color: var(--navy-800); }
+.calculator-page-intro {
+  padding: 56px 0 22px;
+}
+.calculator-page-intro .eyebrow { margin-bottom: 12px; }
+.calculator-page-intro h1 {
+  max-width: 900px;
+  margin: 0;
+  color: var(--navy-950);
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  line-height: 1;
+  letter-spacing: -.05em;
+}
+.calculator-page-intro p:last-child {
+  max-width: 760px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+.calculator-workspace { padding: 28px 0 100px; }
+.calculator-workspace .calculator-shell { margin-top: 0; }
+.back-link {
+  display: inline-flex;
+  margin-top: 30px;
+  align-items: center;
+  gap: 8px;
+  color: var(--navy-800);
+  font-weight: 850;
+  text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 900px) {
+  .tool-page .site-header { position: relative; }
+  .toolkit-symbols { display: none; }
+  .tool-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .toolkit-hero { padding: 56px 0 44px; }
+  .toolkit-hero h1 { font-size: clamp(2.55rem, 14vw, 4rem); }
+  .toolkit-directory { padding: 52px 0 76px; }
+  .tool-card { min-height: 245px; padding: 26px; }
+  .calculator-page-intro { padding: 42px 0 12px; }
+  .calculator-workspace { padding-bottom: 72px; }
+}
