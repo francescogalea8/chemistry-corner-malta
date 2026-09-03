@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calculate RAM, RMM and RFM step by step with Chemistry Corner Malta.">
+  <meta name="theme-color" content="#061b3a">
+  <title>RAM, RMM &amp; RFM Calculator | Chemistry Corner Malta</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../toolkit.css">
+</head>
+<body class="tool-page">
+  <a class="skip-link" href="#main">Skip to calculator</a>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../../" aria-label="Chemistry Corner Malta home">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span><strong>Chemistry Corner</strong><small>Malta</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Open menu</span><span></span><span></span><span></span>
+      </button>
+      <nav id="site-nav" aria-label="Main navigation">
+        <a href="../../#lessons">Lessons</a>
+        <a href="../../#resources">Resources</a>
+        <a href="../" aria-current="page">Toolkit</a>
+        <a href="../../#faq">FAQ</a>
+        <a class="nav-cta" href="../../#contact">Enquire</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="subpage-main" id="main">
+    <section class="calculator-page-intro">
+      <div class="container">
+        <p class="breadcrumbs"><a href="../../">Home</a><span aria-hidden="true">›</span><a href="../">Toolkit</a><span aria-hidden="true">›</span><strong>Mass calculator</strong></p>
+        <p class="eyebrow dark"><span></span><b aria-hidden="true">∑</b> Relative mass calculator</p>
+        <h1>Calculate RAM, RMM and RFM.</h1>
+        <p>Choose the correct relative mass, enter an element or chemical formula, and see how every atom contributes to the total.</p>
+      </div>
+    </section>
+
+    <section class="calculator-workspace">
+      <div class="container">
+        <div class="calculator-shell">
+          <form class="mass-calculator" id="mass-calculator">
+            <div class="calculator-title">
+              <span class="calculator-symbol" aria-hidden="true">Ar</span>
+              <div><strong>Relative mass calculator</strong><small>Common O Level atomic masses</small></div>
+            </div>
+
+            <label for="mass-type">What would you like to calculate?</label>
+            <select id="mass-type" name="massType">
+              <option value="RAM">RAM — Relative atomic mass</option>
+              <option value="RMM" selected>RMM — Relative molecular mass</option>
+              <option value="RFM">RFM — Relative formula mass</option>
+            </select>
+            <div class="mass-type-guide" id="mass-type-guide" aria-live="polite">
+              <span>RMM</span>
+              <p><strong>Relative molecular mass</strong> is the total of the RAM values in one molecule. Use it for molecular covalent substances such as H2O and CO2.</p>
+            </div>
+
+            <label for="chemical-formula">Element symbol or chemical formula</label>
+            <input id="chemical-formula" name="formula" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="For example: H2O" aria-describedby="formula-help" required>
+            <p class="formula-help" id="formula-help">Use capital letters correctly. Brackets and waters of crystallisation are supported, for example Ca(OH)2 or CuSO4·5H2O.</p>
+
+            <div class="calculator-actions">
+              <button class="button calculate-button" type="submit">Calculate <span aria-hidden="true">→</span></button>
+              <button class="example-button" id="mass-example" type="button">Try an example</button>
+            </div>
+          </form>
+
+          <div class="calculator-result" id="mass-result" aria-live="polite">
+            <div class="result-empty">
+              <div class="result-molecule" aria-hidden="true"><span>H</span><span>O</span><span>H</span></div>
+              <h2>Your working will appear here</h2>
+              <p>Enter a formula to see the contribution made by every element.</p>
+            </div>
+          </div>
+        </div>
+        <p class="calculator-note"><strong>Remember:</strong> RAM, RMM and RFM are relative values, so they do not have units. The calculator checks compound type using standard O Level rules and uses commonly rounded atomic masses.</p>
+        <a class="back-link" href="../"><span aria-hidden="true">←</span> Back to Chemistry Toolkit</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a class="brand footer-brand" href="../../">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span><strong>Chemistry Corner</strong><small>Malta</small></span>
+      </a>
+      <p>© <span id="year">2026</span> Chemistry Corner Malta. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="../../script.js"></script>
+</body>
+</html>
