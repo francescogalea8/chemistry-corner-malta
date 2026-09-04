@@ -191,13 +191,87 @@ function splitEquationSide(value, sideName) {
   if (!value.trim()) throw new Error(`Enter the ${sideName}.`);
   return value.split("+").map(item => item.trim()).filter(Boolean).map(item => {
     let compact = normaliseFormula(item).replace(/\s+/g, "");
+    const coefficientMatch = compact.match(/^(\d+)(?=[A-Z(\[])/);
+    const enteredCoefficient = coefficientMatch ? Number(coefficientMatch[1]) : 1;
     const stateMatch = compact.match(/\((aq|s|l|g)\)$/i);
     const state = stateMatch ? stateMatch[0].toLowerCase() : "";
     if (stateMatch) compact = compact.slice(0, -stateMatch[0].length);
     compact = compact.replace(/^\d+/, "");
     if (!compact) throw new Error(`Check the ${sideName}: one formula is missing.`);
-    return { formula: compact, state, atoms: parseFormula(compact) };
+    return { formula: compact, state, atoms: parseFormula(compact), enteredCoefficient };
   });
+}
+
+function sideAtomCounts(compounds, useBalancedCoefficients = null, coefficientOffset = 0) {
+  const counts = {};
+  compounds.forEach((compound, index) => {
+    const multiplier = useBalancedCoefficients
+      ? Number(useBalancedCoefficients[index + coefficientOffset])
+      : compound.enteredCoefficient;
+    Object.entries(compound.atoms).forEach(([element, count]) => {
+      counts[element] = (counts[element] || 0) + count * multiplier;
+    });
+  });
+  return counts;
+}
+
+function totalAtoms(counts) {
+  return Object.values(counts).reduce((total, count) => total + count, 0);
+}
+
+function setScaleState(state, leftCount = "", rightCount = "", message = "") {
+  const leftPan = balanceVisual.querySelector(".scale-pan-left");
+  const rightPan = balanceVisual.querySelector(".scale-pan-right");
+  const scaleMessage = balanceVisual.querySelector(".scale-message");
+  balanceVisual.className = `balance-visual${state ? ` ${state}` : ""}`;
+  balanceVisual.style.removeProperty("--beam-tilt");
+  leftPan.dataset.count = leftCount === "" ? "" : `${leftCount} atoms`;
+  rightPan.dataset.count = rightCount === "" ? "" : `${rightCount} atoms`;
+  scaleMessage.textContent = message || "Atoms must match on both sides";
+}
+
+function updateLiveScale() {
+  autoResult.className = "auto-result";
+  autoResult.innerHTML = "<p>When ready, select <strong>Auto balance</strong> to calculate the coefficients.</p>";
+  if (!reactantsInput.value.trim() || !productsInput.value.trim()) {
+    setScaleState("", "", "", "Enter both sides to test the balance");
+    return;
+  }
+
+  try {
+    const reactants = splitEquationSide(reactantsInput.value, "reactants");
+    const products = splitEquationSide(productsInput.value, "products");
+    const leftCounts = sideAtomCounts(reactants);
+    const rightCounts = sideAtomCounts(products);
+    const elements = new Set([...Object.keys(leftCounts), ...Object.keys(rightCounts)]);
+    let leftExcess = 0;
+    let rightExcess = 0;
+    let matches = true;
+    elements.forEach(element => {
+      const difference = (leftCounts[element] || 0) - (rightCounts[element] || 0);
+      if (difference !== 0) matches = false;
+      if (difference > 0) leftExcess += difference;
+      if (difference < 0) rightExcess += -difference;
+    });
+    const leftTotal = totalAtoms(leftCounts);
+    const rightTotal = totalAtoms(rightCounts);
+
+    if (matches) {
+      setScaleState("is-balanced", leftTotal, rightTotal, "Every element matches — balanced!");
+    } else if (leftExcess > rightExcess) {
+      const tilt = Math.min(9, 3 + (leftExcess - rightExcess));
+      setScaleState("is-unbalanced leans-left", leftTotal, rightTotal, "Reactant side has the greater atom excess");
+      balanceVisual.style.setProperty("--beam-tilt", `-${tilt}deg`);
+    } else if (rightExcess > leftExcess) {
+      const tilt = Math.min(9, 3 + (rightExcess - leftExcess));
+      setScaleState("is-unbalanced leans-right", leftTotal, rightTotal, "Product side has the greater atom excess");
+      balanceVisual.style.setProperty("--beam-tilt", `${tilt}deg`);
+    } else {
+      setScaleState("has-error equal-but-different", leftTotal, rightTotal, "Equal total atoms, but individual elements do not match");
+    }
+  } catch {
+    setScaleState("", "", "", "Finish entering valid formulae to test the balance");
+  }
 }
 
 function rref(matrix) {
@@ -310,13 +384,15 @@ function balanceTypedEquation() {
       return `<span><b>${element}</b> ${leftTotal.toString()} = ${rightTotal.toString()}</span>`;
     }).join("");
 
+    const balancedLeftCounts = sideAtomCounts(reactants, coefficients, 0);
+    const balancedRightCounts = sideAtomCounts(products, coefficients, reactants.length);
     autoResult.className = "auto-result is-success";
     autoResult.innerHTML = `<span class="auto-result-label">Balanced equation</span><div class="balanced-output">${createBalancedEquation(reactants, products, coefficients)}</div><div class="atom-checks" aria-label="Atom counts on each side">${atomRows}</div><p>These are the smallest possible whole-number coefficients.</p>`;
-    balanceVisual.className = "balance-visual is-balanced";
+    setScaleState("is-balanced", totalAtoms(balancedLeftCounts), totalAtoms(balancedRightCounts), "Every element matches — balanced!");
   } catch (error) {
     autoResult.className = "auto-result is-error";
     autoResult.innerHTML = `<strong>Check the equation</strong><p>${error.message}</p>`;
-    balanceVisual.className = "balance-visual has-error";
+    setScaleState("has-error", "", "", "The equation cannot be balanced as entered");
   }
 }
 
@@ -324,7 +400,7 @@ function clearTypedEquation() {
   autoForm.reset();
   autoResult.className = "auto-result";
   autoResult.innerHTML = "<p>Enter both sides of an equation, then select <strong>Auto balance</strong>.</p>";
-  balanceVisual.className = "balance-visual";
+  setScaleState("", "", "", "Enter both sides to test the balance");
   reactantsInput.focus();
 }
 
@@ -467,11 +543,13 @@ autoForm.addEventListener("submit", event => {
   balanceTypedEquation();
 });
 clearAutoButton.addEventListener("click", clearTypedEquation);
+reactantsInput.addEventListener("input", updateLiveScale);
+productsInput.addEventListener("input", updateLiveScale);
 document.querySelectorAll("[data-reactants][data-products]").forEach(button => {
   button.addEventListener("click", () => {
     reactantsInput.value = button.dataset.reactants;
     productsInput.value = button.dataset.products;
-    balanceTypedEquation();
+    updateLiveScale();
   });
 });
 
