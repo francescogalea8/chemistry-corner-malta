@@ -215,7 +215,10 @@ elements.forEach((element) => {
   tile.type = 'button';
   tile.className = 'element-tile family-' + family;
   tile.dataset.family = family;
-  if (element.n === 1) tile.classList.add('hydrogen-special');
+  if (element.n === 1) {
+    tile.classList.add('hydrogen-special');
+    tile.title = 'Hydrogen is shown separately because it is a unique non-metal.';
+  }
   tile.style.gridColumn = element.n === 1 ? '10' : String(element.x + 1);
   tile.style.gridRow = String(element.y >= 9 ? element.y : element.y + 1);
   tile.setAttribute('aria-label', element.name + ', atomic number ' + element.n);
