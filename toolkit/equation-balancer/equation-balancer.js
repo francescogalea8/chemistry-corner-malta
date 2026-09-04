@@ -63,10 +63,11 @@ const questionBank = {
   ]
 };
 
-const list = document.querySelector("#question-list");
-const checkButton = document.querySelector("#check-answers");
+const list = document.querySelector("#equation-list");
+const worksheetForm = document.querySelector("#worksheet");
+const checkButton = document.querySelector("#submit-worksheet");
 const newButton = document.querySelector("#new-worksheet");
-const printButton = document.querySelector("#print-sheet");
+const printButton = document.querySelector("#print-worksheet");
 const progressText = document.querySelector("#progress-text");
 const progressBar = document.querySelector("#progress-bar");
 const scorePanel = document.querySelector("#score-panel");
@@ -109,10 +110,10 @@ function coefficientInput(questionIndex, coefficientIndex, formula) {
 
 function reactionMarkup(question, questionIndex) {
   let coefficientIndex = 0;
-  const left = question.left.map(formula => coefficientInput(questionIndex, coefficientIndex++, formula)).join('<span class="plus" aria-hidden="true"> + </span>');
-  const right = question.right.map(formula => coefficientInput(questionIndex, coefficientIndex++, formula)).join('<span class="plus" aria-hidden="true"> + </span>');
-  const condition = question.condition ? `<p class="condition">Condition: ${question.condition}</p>` : "";
-  return `${condition}<div class="reaction">${left}<span class="arrow" aria-label="reacts to form"> → </span>${right}</div>`;
+  const left = question.left.map(formula => coefficientInput(questionIndex, coefficientIndex++, formula)).join('<span class="operator" aria-hidden="true"> + </span>');
+  const right = question.right.map(formula => coefficientInput(questionIndex, coefficientIndex++, formula)).join('<span class="operator" aria-hidden="true"> + </span>');
+  const condition = question.condition ? `<small class="condition">(${question.condition})</small>` : "";
+  return `<div class="equation-expression">${left}<span class="arrow" aria-label="reacts to form"> → </span>${right}${condition}</div>`;
 }
 
 function renderWorksheet() {
@@ -121,10 +122,9 @@ function renderWorksheet() {
   scorePanel.hidden = true;
   scorePanel.innerHTML = "";
   list.innerHTML = worksheet.map((question, index) => `
-    <li class="question-card" data-card="${index}">
-      <div class="question-heading"><span>Question ${index + 1}</span><span class="difficulty-tag ${question.level.toLowerCase()}">${question.level}</span></div>
+    <li class="equation-question" data-card="${index}">
       ${reactionMarkup(question, index)}
-      <div class="result" aria-live="polite"></div>
+      <span class="question-state" aria-live="polite">${question.level}</span>
     </li>
   `).join("");
   list.querySelectorAll("input").forEach(input => input.addEventListener("input", updateProgress));
@@ -137,7 +137,7 @@ function getInputs(questionIndex) {
 }
 
 function updateProgress() {
-  const cards = [...list.querySelectorAll(".question-card")];
+  const cards = [...list.querySelectorAll(".equation-question")];
   const completed = cards.filter((_, index) => getInputs(index).every(input => input.value !== "" && Number(input.value) >= 1)).length;
   progressText.textContent = `${completed} of ${QUESTION_COUNT} questions completed`;
   progressBar.style.width = `${(completed / QUESTION_COUNT) * 100}%`;
@@ -171,25 +171,26 @@ function checkAnswers() {
     const exact = values.every((value, coefficientIndex) => value === question.coefficients[coefficientIndex]);
     const sameRatio = values.every((value, coefficientIndex) => value * question.coefficients[0] === values[0] * question.coefficients[coefficientIndex]);
     const card = list.querySelector(`[data-card="${index}"]`);
-    const result = card.querySelector(".result");
+    const state = card.querySelector(".question-state");
 
     inputs.forEach(input => { input.disabled = true; });
     if (exact) {
       score += 1;
-      card.classList.add("correct");
-      result.innerHTML = `<strong>Correct.</strong> ${question.type}`;
+      card.classList.add("is-correct");
+      state.textContent = "Correct";
     } else {
-      card.classList.add("incorrect");
+      card.classList.add("is-incorrect");
+      state.textContent = "Review";
       const reason = sameRatio && simplest(values) > 1
         ? "Your ratio is balanced, but it must be reduced to the smallest whole numbers."
         : "Check that every element has the same atom count on both sides.";
-      result.innerHTML = `<strong>Not quite.</strong> ${reason}<span class="answer">Correct answer: ${correctEquation(question)}</span><span class="reaction-type">Reaction type: ${question.type}</span>`;
+      card.insertAdjacentHTML("beforeend", `<p class="correction"><strong>Correct answer: ${correctEquation(question)}</strong><br>${reason} Reaction type: ${question.type}.</p>`);
     }
   });
 
   const percentage = Math.round((score / QUESTION_COUNT) * 100);
   const message = percentage === 100 ? "Excellent—every equation is balanced." : percentage >= 73 ? "Strong work. Review the corrections below." : percentage >= 47 ? "Good start. Use the revealed answers to spot your pattern." : "Keep practising—balance one element at a time and leave hydrogen and oxygen until later when possible.";
-  scorePanel.innerHTML = `<div><span class="score-label">Your score</span><strong>${score} / ${QUESTION_COUNT}</strong><span>${percentage}%</span></div><p>${message}</p><button type="button" id="score-new-sheet">Generate another worksheet</button>`;
+  scorePanel.innerHTML = `<div class="score-head"><div class="score-copy"><span>Worksheet complete</span><h2>Your score: ${score} / ${QUESTION_COUNT}</h2><p>${message}</p></div><div class="score-mark" aria-label="${percentage} percent">${percentage}%</div></div><div class="score-actions"><button class="new-score-button" type="button" id="score-new-sheet">Generate another worksheet</button></div>`;
   scorePanel.hidden = false;
   document.querySelector("#score-new-sheet").addEventListener("click", renderWorksheet);
   checkButton.disabled = true;
@@ -201,7 +202,7 @@ difficultyButtons.forEach(button => {
     difficulty = button.dataset.difficulty;
     difficultyButtons.forEach(item => {
       const isActive = item === button;
-      item.classList.toggle("active", isActive);
+      item.classList.toggle("is-active", isActive);
       item.setAttribute("aria-pressed", String(isActive));
     });
     renderWorksheet();
@@ -210,6 +211,9 @@ difficultyButtons.forEach(button => {
 
 newButton.addEventListener("click", renderWorksheet);
 printButton.addEventListener("click", () => window.print());
-checkButton.addEventListener("click", checkAnswers);
+worksheetForm.addEventListener("submit", event => {
+  event.preventDefault();
+  checkAnswers();
+});
 
 renderWorksheet();
