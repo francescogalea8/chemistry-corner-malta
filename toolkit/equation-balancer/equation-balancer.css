@@ -364,3 +364,36 @@
 @media print {
   .auto-balancer-section { display:none!important; }
 }
+
+
+/* Reactive scale states */
+.scale-beam { transform:translateX(-50%) rotate(var(--beam-tilt,0deg)); }
+.scale-pan { top:132px; }
+.scale-pan::after {
+  content:attr(data-count);
+  position:absolute;
+  left:50%;
+  bottom:-28px;
+  min-width:74px;
+  transform:translateX(-50%);
+  color:rgba(255,255,255,.72);
+  font-size:.68rem;
+  font-weight:850;
+  text-align:center;
+}
+.balance-visual.leans-left .scale-pan-left { top:145px; }
+.balance-visual.leans-left .scale-pan-right { top:119px; }
+.balance-visual.leans-right .scale-pan-left { top:119px; }
+.balance-visual.leans-right .scale-pan-right { top:145px; }
+.balance-visual.is-unbalanced .scale-message { color:#fff; }
+.balance-visual.is-unbalanced .scale-message::before { content:"Unbalanced — "; color:#ffcf54; }
+.balance-visual.is-balanced .scale-message::after { content:""; }
+.balance-visual.equal-but-different .scale-beam { transform:translateX(-50%) rotate(0deg); }
+
+@media (max-width:760px) {
+  .scale-pan { top:121px; }
+  .balance-visual.leans-left .scale-pan-left { top:134px; }
+  .balance-visual.leans-left .scale-pan-right { top:108px; }
+  .balance-visual.leans-right .scale-pan-left { top:108px; }
+  .balance-visual.leans-right .scale-pan-right { top:134px; }
+}
