@@ -11,9 +11,10 @@
 .periodic-title-row h1 {
   margin: 0;
   color: var(--navy-950);
-  font-size: clamp(2.45rem, 6vw, 5rem);
+  font-size: clamp(1.35rem, 6vw, 4.6rem);
   line-height: .98;
   letter-spacing: -.055em;
+  white-space: nowrap;
 }
 .periodic-title-row > div:first-child > p:last-child {
   max-width: 720px;
@@ -36,7 +37,7 @@
 }
 .tile-key strong { align-self: center; font-size: 3.15rem; line-height: .9; }
 .tile-key > span:not(.key-ram):not(.key-number) { font-size: .86rem; font-weight: 800; }
-.tile-key .key-ram, .tile-key .key-number { display: flex; justify-content: space-between; font-size: .82rem; font-weight: 950; }
+.tile-key .key-ram, .tile-key .key-number { display: flex; justify-content: center; align-items: baseline; gap: 7px; text-align: center; font-size: .82rem; font-weight: 950; }
 .tile-key small { font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; }
 
 .periodic-workspace { padding: 34px 0 86px; }
@@ -52,8 +53,19 @@
   background: #fff;
   font-size: .76rem;
   font-weight: 800;
+  font-family: inherit;
   line-height: 1.1;
+  cursor: default;
+  transition: opacity .18s ease, transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
+.legend-item:hover, .legend-item:focus-visible, .legend-item.is-active {
+  z-index: 2;
+  border-color: rgba(6,27,58,.42);
+  transform: translateY(-3px) scale(1.045);
+  box-shadow: 0 9px 18px rgba(6,27,58,.14);
+  outline: none;
+}
+.family-legend.has-active-filter .legend-item:not(.is-active) { opacity: .4; transform: scale(.97); }
 .legend-dot { width: 13px; height: 13px; border-radius: 4px; background: var(--family-color); box-shadow: inset 0 0 0 1px rgba(6,27,58,.15); }
 .scroll-hint { display: none; margin: 0 0 12px; color: var(--muted); font-size: .82rem; font-weight: 700; }
 .table-scroll {
@@ -117,10 +129,23 @@
   outline: 3px solid var(--navy-950);
   outline-offset: 1px;
 }
-.element-ram { text-align: right; font-size: .61rem; font-weight: 850; line-height: 1; }
+.element-ram { text-align: center; font-size: .61rem; font-weight: 850; line-height: 1; }
 .element-symbol { align-self: center; font-size: 1.45rem; font-weight: 950; line-height: 1; letter-spacing: -.035em; }
 .element-name { overflow: hidden; font-size: .59rem; font-weight: 750; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap; }
-.element-number { text-align: left; font-size: .63rem; font-weight: 950; line-height: 1; }
+.element-number { text-align: center; font-size: .63rem; font-weight: 950; line-height: 1; }
+.periodic-grid.has-active-family .element-tile:not(.is-family-active) {
+  opacity: .16;
+  filter: grayscale(.7) saturate(.35);
+  transform: scale(.94);
+}
+.periodic-grid.has-active-family .element-tile.is-family-active {
+  z-index: 2;
+  transform: translateY(-4px) scale(1.045);
+  filter: saturate(1.2) brightness(1.035);
+  box-shadow: 0 10px 20px rgba(6,27,58,.22);
+  outline: 2px solid rgba(6,27,58,.72);
+  outline-offset: 1px;
+}
 .series-placeholder {
   display: grid;
   place-items: center;
@@ -253,7 +278,7 @@
 @media (max-width: 560px) {
   .periodic-container { width: min(calc(100% - 20px), 1510px); }
   .periodic-intro { padding: 34px 0 26px; }
-  .periodic-title-row h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); }
+  .periodic-title-row h1 { font-size: clamp(1.35rem, 6.8vw, 2.2rem); }
   .family-legend { gap: 6px; }
   .legend-item { padding: 6px 9px 6px 7px; font-size: .69rem; }
   .table-scroll { padding: 9px; border-radius: 18px; }
