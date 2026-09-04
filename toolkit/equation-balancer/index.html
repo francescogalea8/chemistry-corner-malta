@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Generate and complete a 15-question O-Level chemical-equation balancing worksheet with instant marking and corrections.">
+  <meta name="description" content="Automatically balance chemical equations or complete a 15-question O-Level practice worksheet with instant marking and corrections.">
   <meta name="theme-color" content="#061b3a">
   <title>Equation Balancing Practice | Chemistry Corner Malta</title>
   <link rel="stylesheet" href="../../styles.css">
@@ -46,6 +46,57 @@
             <i>→</i>
             <span><b>2</b>H₂O</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auto-balancer-section" id="auto-balancer">
+      <div class="equation-container">
+        <div class="auto-balancer-shell">
+          <div class="auto-balancer-heading">
+            <div>
+              <span class="auto-kicker">Auto Balancer</span>
+              <h2>Type an equation. We’ll balance it.</h2>
+              <p>Enter the correct reactant and product formulae. The calculator will find the smallest whole-number coefficients and verify every atom.</p>
+            </div>
+            <span class="neutral-equations-note">Neutral equations · brackets and hydrates supported</span>
+          </div>
+
+          <div class="balance-visual" id="balance-visual" aria-hidden="true">
+            <div class="scale-beam"><span></span><span></span></div>
+            <div class="scale-centre"><i></i></div>
+            <div class="scale-pan scale-pan-left"></div>
+            <div class="scale-pan scale-pan-right"></div>
+            <strong class="scale-message">Atoms must match on both sides</strong>
+          </div>
+
+          <form id="auto-balance-form" class="auto-balance-form" novalidate>
+            <div class="equation-entry-grid">
+              <label class="equation-side-input">
+                <span><b>R</b> Reactants</span>
+                <input id="reactants-input" type="text" autocomplete="off" spellcheck="false" placeholder="e.g. Fe + O2" aria-describedby="formula-help">
+              </label>
+              <span class="entry-arrow" aria-hidden="true">→</span>
+              <label class="equation-side-input">
+                <span><b>P</b> Products</span>
+                <input id="products-input" type="text" autocomplete="off" spellcheck="false" placeholder="e.g. Fe2O3" aria-describedby="formula-help">
+              </label>
+            </div>
+            <p class="formula-help" id="formula-help">Use + between compounds. You may type ordinary numbers: H2SO4, Ca(OH)2 or CuSO4·5H2O.</p>
+            <div class="example-equations" aria-label="Example equations">
+              <span>Try an example:</span>
+              <button type="button" data-reactants="H2 + O2" data-products="H2O">H₂ + O₂ → H₂O</button>
+              <button type="button" data-reactants="Fe + O2" data-products="Fe2O3">Fe + O₂ → Fe₂O₃</button>
+              <button type="button" data-reactants="C3H8 + O2" data-products="CO2 + H2O">C₃H₈ + O₂ → CO₂ + H₂O</button>
+            </div>
+            <div class="auto-actions">
+              <button class="auto-balance-button" type="submit">Auto balance</button>
+              <button class="clear-balance-button" id="clear-auto-balance" type="button">Clear</button>
+            </div>
+            <div class="auto-result" id="auto-balance-result" aria-live="polite">
+              <p>Enter both sides of an equation, then select <strong>Auto balance</strong>.</p>
+            </div>
+          </form>
         </div>
       </div>
     </section>
