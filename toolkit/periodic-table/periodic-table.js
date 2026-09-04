@@ -135,11 +135,29 @@ Object.entries(families).forEach(([key, info]) => {
   legend.append(item);
 });
 
-for (let group = 1; group <= 18; group += 1) {
-  const label = createText('span','group-label',String(group));
-  label.style.gridColumn = String(group + 1);
+const groupLabels = [
+  { column: '2', label: '1' },
+  { column: '3', label: '2' },
+  { column: '4 / span 10', label: 'Transition metals', wide: true },
+  { column: '14', label: '3', modern: '13' },
+  { column: '15', label: '4', modern: '14' },
+  { column: '16', label: '5', modern: '15' },
+  { column: '17', label: '6', modern: '16' },
+  { column: '18', label: '7', modern: '17' },
+  { column: '19', label: '0', modern: '18' }
+];
+groupLabels.forEach((group) => {
+  const label = document.createElement('span');
+  label.className = 'group-label' + (group.wide ? ' transition-heading' : '');
+  label.style.gridColumn = group.column;
+  if (group.wide) {
+    label.textContent = group.label;
+  } else {
+    label.append(createText('strong','',group.label));
+    if (group.modern) label.append(createText('small','','IUPAC ' + group.modern));
+  }
   table.append(label);
-}
+});
 for (let period = 1; period <= 7; period += 1) {
   const label = createText('span','period-label',String(period));
   label.style.gridRow = String(period + 1);
@@ -197,7 +215,8 @@ elements.forEach((element) => {
   tile.type = 'button';
   tile.className = 'element-tile family-' + family;
   tile.dataset.family = family;
-  tile.style.gridColumn = String(element.x + 1);
+  if (element.n === 1) tile.classList.add('hydrogen-special');
+  tile.style.gridColumn = element.n === 1 ? '10' : String(element.x + 1);
   tile.style.gridRow = String(element.y >= 9 ? element.y : element.y + 1);
   tile.setAttribute('aria-label', element.name + ', atomic number ' + element.n);
   tile.append(
