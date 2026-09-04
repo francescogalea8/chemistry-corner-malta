@@ -90,7 +90,7 @@
 .directory-intro p { margin: 0; color: var(--muted); }
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
 }
 .tool-card {
@@ -209,3 +209,14 @@ a.tool-card:hover, a.tool-card:focus-visible {
   font-size: 1rem;
 }
 .periodic-card .tool-card-action { color: var(--navy-950); }
+
+.tool-card.ions-card {
+  color: var(--navy-950);
+  border-color: rgba(6,27,58,.12);
+  background: linear-gradient(145deg,#fff4b8,var(--gold-500));
+}
+.ions-card .tool-card-icon { color: #fff; background: #da4d9d; font-size: 1rem; }
+.ions-card .tool-card-action { color: var(--navy-950); }
+@media (max-width: 1120px) and (min-width: 901px) {
+  .tool-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
