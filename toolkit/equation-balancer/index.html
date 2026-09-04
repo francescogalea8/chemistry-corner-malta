@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Generate and complete a 15-question O-Level chemical-equation balancing worksheet with instant marking and corrections.">
+  <meta name="theme-color" content="#061b3a">
+  <title>Equation Balancing Practice | Chemistry Corner Malta</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../toolkit.css">
+  <link rel="stylesheet" href="equation-balancer.css">
+</head>
+<body class="tool-page equation-page">
+  <a class="skip-link" href="#worksheet">Skip to worksheet</a>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="../../" aria-label="Chemistry Corner Malta home">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span><strong>Chemistry Corner</strong><small>Malta</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Open menu</span><span></span><span></span><span></span>
+      </button>
+      <nav id="site-nav" aria-label="Main navigation">
+        <a href="../../#lessons">Lessons</a>
+        <a href="../../#resources">Resources</a>
+        <a href="../" aria-current="page">Toolkit</a>
+        <a href="../../#faq">FAQ</a>
+        <a class="nav-cta" href="../../#contact">Enquire</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="equation-main" id="main">
+    <section class="equation-intro">
+      <div class="equation-container">
+        <p class="breadcrumbs"><a href="../../">Home</a><span aria-hidden="true">›</span><a href="../">Toolkit</a><span aria-hidden="true">›</span><strong>Equation Balancer</strong></p>
+        <div class="equation-heading">
+          <div>
+            <p class="eyebrow dark"><span></span><b aria-hidden="true">⚖</b> Interactive worksheet</p>
+            <h1>Balance 15 chemical equations</h1>
+            <p>Enter the smallest whole-number coefficient in every box. Your answers stay hidden until you complete and submit the entire worksheet.</p>
+          </div>
+          <div class="balance-example" aria-hidden="true">
+            <span><b>2</b>H₂ + O₂</span>
+            <i>→</i>
+            <span><b>2</b>H₂O</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="worksheet-section">
+      <div class="equation-container">
+        <div class="worksheet-toolbar">
+          <div>
+            <span class="toolbar-label">Difficulty</span>
+            <div class="difficulty-group" role="group" aria-label="Worksheet difficulty">
+              <button type="button" data-difficulty="easy">Easy</button>
+              <button type="button" data-difficulty="medium">Medium</button>
+              <button type="button" data-difficulty="hard">Hard</button>
+              <button class="is-active" type="button" data-difficulty="mixed">Mixed</button>
+            </div>
+          </div>
+          <div class="toolbar-actions">
+            <button class="secondary-action" id="print-worksheet" type="button">Print blank sheet</button>
+            <button class="secondary-action" id="new-worksheet" type="button">Generate new worksheet</button>
+          </div>
+        </div>
+
+        <div class="worksheet-status">
+          <div>
+            <span>Worksheet progress</span>
+            <strong id="progress-text">0 of 15 complete</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+        </div>
+
+        <form id="worksheet" novalidate>
+          <ol class="equation-list" id="equation-list"></ol>
+          <div class="submission-panel">
+            <div>
+              <strong>Complete all 15 equations first</strong>
+              <p id="submission-message">The answer key and corrections will appear only after every coefficient box has been filled.</p>
+            </div>
+            <button class="submit-worksheet" id="submit-worksheet" type="submit" disabled>Check all answers</button>
+          </div>
+        </form>
+
+        <section class="score-panel" id="score-panel" aria-live="polite" hidden></section>
+
+        <div class="balance-rules">
+          <h2>Remember</h2>
+          <div>
+            <p><strong>1.</strong> Change coefficients only—never change a chemical formula or subscript.</p>
+            <p><strong>2.</strong> Count every element on both sides of the equation.</p>
+            <p><strong>3.</strong> Finish with the smallest possible whole-number ratio.</p>
+          </div>
+        </div>
+
+        <a class="back-link" href="../"><span aria-hidden="true">←</span> Back to Chemistry Toolkit</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a class="brand footer-brand" href="../../">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span><strong>Chemistry Corner</strong><small>Malta</small></span>
+      </a>
+      <p>© <span id="year">2026</span> Chemistry Corner Malta. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="../../script.js"></script>
+  <script src="equation-balancer.js"></script>
+</body>
+</html>
