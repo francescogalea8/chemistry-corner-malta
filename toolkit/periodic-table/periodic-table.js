@@ -126,8 +126,11 @@ const detail = document.querySelector('#element-detail');
 const closeButton = document.querySelector('#dialog-close');
 
 Object.entries(families).forEach(([key, info]) => {
-  const item = createText('span','legend-item','');
+  const item = createText('button','legend-item','');
+  item.type = 'button';
   item.classList.add('family-' + key);
+  item.dataset.family = key;
+  item.setAttribute('aria-label', 'Highlight ' + info.label);
   item.append(createText('span','legend-dot',''), document.createTextNode(info.label));
   legend.append(item);
 });
@@ -157,11 +160,43 @@ function addSeriesPlaceholder(text, row) {
 addSeriesPlaceholder('57–71',7);
 addSeriesPlaceholder('89–103',8);
 
+function highlightFamily(family) {
+  legend.classList.add('has-active-filter');
+  table.classList.add('has-active-family');
+  legend.querySelectorAll('.legend-item').forEach((item) => {
+    item.classList.toggle('is-active', item.dataset.family === family);
+  });
+  table.querySelectorAll('.element-tile').forEach((tile) => {
+    tile.classList.toggle('is-family-active', tile.dataset.family === family);
+  });
+}
+
+function clearFamilyHighlight() {
+  legend.classList.remove('has-active-filter');
+  table.classList.remove('has-active-family');
+  legend.querySelectorAll('.legend-item').forEach((item) => item.classList.remove('is-active'));
+  table.querySelectorAll('.element-tile').forEach((tile) => tile.classList.remove('is-family-active'));
+}
+
+legend.addEventListener('pointerover', (event) => {
+  const item = event.target.closest('.legend-item');
+  if (item) highlightFamily(item.dataset.family);
+});
+legend.addEventListener('pointerleave', clearFamilyHighlight);
+legend.addEventListener('focusin', (event) => {
+  const item = event.target.closest('.legend-item');
+  if (item) highlightFamily(item.dataset.family);
+});
+legend.addEventListener('focusout', (event) => {
+  if (!legend.contains(event.relatedTarget)) clearFamilyHighlight();
+});
+
 elements.forEach((element) => {
   const family = familyFor(element);
   const tile = document.createElement('button');
   tile.type = 'button';
   tile.className = 'element-tile family-' + family;
+  tile.dataset.family = family;
   tile.style.gridColumn = String(element.x + 1);
   tile.style.gridRow = String(element.y >= 9 ? element.y : element.y + 1);
   tile.setAttribute('aria-label', element.name + ', atomic number ' + element.n);
