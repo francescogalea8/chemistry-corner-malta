@@ -253,3 +253,114 @@
   .question-state,.correction { display:none!important; }
   .coefficient { border:1px solid #444; background:#fff; }
 }
+
+
+/* Auto-balancer */
+.auto-balancer-section { padding:28px 0 0; }
+.auto-balancer-shell {
+  padding:26px;
+  border:1px solid #cfe2e7;
+  border-radius:26px;
+  background:#fff;
+  box-shadow:0 18px 45px rgba(4,31,45,.09);
+}
+.auto-balancer-heading { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:20px; }
+.auto-kicker { display:inline-flex; padding:6px 10px; border-radius:999px; color:var(--navy-950); background:var(--gold-500); font-size:.7rem; font-weight:950; letter-spacing:.07em; text-transform:uppercase; }
+.auto-balancer-heading h2 { margin:8px 0 5px; color:var(--navy-950); font-size:clamp(1.65rem,4vw,2.65rem); line-height:1.05; letter-spacing:-.035em; }
+.auto-balancer-heading p { max-width:720px; margin:0; color:var(--muted); }
+.neutral-equations-note { max-width:270px; color:#53717f; font-size:.76rem; font-weight:800; text-align:right; }
+.balance-visual {
+  position:relative;
+  height:205px;
+  margin-bottom:20px;
+  overflow:hidden;
+  border-radius:21px;
+  background:
+    radial-gradient(circle at 20% 25%,rgba(255,224,94,.28),transparent 15rem),
+    radial-gradient(circle at 80% 30%,rgba(0,219,200,.24),transparent 15rem),
+    linear-gradient(145deg,var(--navy-950),var(--navy-800));
+}
+.scale-beam {
+  position:absolute;
+  top:62px;
+  left:50%;
+  width:min(62%,620px);
+  height:12px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#d4f8f3,#48cbbb 42%,#127a78 43%,#0b535d);
+  box-shadow:0 8px 18px rgba(0,0,0,.3);
+  transform:translateX(-50%) rotate(-4deg);
+  transition:transform .7s cubic-bezier(.2,.8,.2,1),background .4s ease;
+}
+.scale-beam span { position:absolute; top:8px; width:2px; height:65px; background:#c5e7e5; transform-origin:top; }
+.scale-beam span:first-child { left:12%; }
+.scale-beam span:last-child { right:12%; }
+.scale-centre { position:absolute; top:41px; left:50%; width:46px; height:46px; transform:translateX(-50%); border:11px solid rgba(255,255,255,.16); border-radius:50%; background:var(--gold-500); box-shadow:0 0 0 5px rgba(255,211,90,.18); }
+.scale-centre::after { content:""; position:absolute; top:35px; left:50%; width:16px; height:91px; transform:translateX(-50%); border-radius:0 0 8px 8px; background:linear-gradient(90deg,#93aeb6,#ecffff,#6b8791); }
+.scale-centre i { display:block; width:100%; height:100%; border-radius:50%; background:var(--navy-950); }
+.scale-pan { position:absolute; top:132px; width:min(22%,205px); height:22px; border-radius:4px 4px 80px 80px; background:linear-gradient(#45f4df,#0c9e9a); box-shadow:0 10px 18px rgba(0,0,0,.24); transition:top .7s cubic-bezier(.2,.8,.2,1); }
+.scale-pan::before { position:absolute; top:-31px; left:50%; transform:translateX(-50%); color:#fff; font-size:.72rem; font-weight:950; letter-spacing:.08em; text-transform:uppercase; }
+.scale-pan-left { left:15%; top:118px; }
+.scale-pan-left::before { content:"Reactants"; }
+.scale-pan-right { right:15%; top:145px; }
+.scale-pan-right::before { content:"Products"; }
+.scale-message { position:absolute; right:18px; bottom:14px; color:rgba(255,255,255,.65); font-size:.72rem; }
+.balance-visual.is-balanced .scale-beam { transform:translateX(-50%) rotate(0deg); background:linear-gradient(180deg,#fff6bb,#ffd35a 42%,#b87900 43%,#77510a); }
+.balance-visual.is-balanced .scale-pan-left,.balance-visual.is-balanced .scale-pan-right { top:132px; }
+.balance-visual.is-balanced .scale-message { color:#fff; }
+.balance-visual.is-balanced .scale-message::after { content:" — balanced!"; color:var(--gold-500); }
+.balance-visual.has-error .scale-beam { background:linear-gradient(180deg,#ffd0d0,#ef7c7c 45%,#8e2c38 46%); }
+.equation-entry-grid { display:grid; grid-template-columns:1fr 56px 1fr; align-items:end; gap:14px; }
+.equation-side-input { display:block; padding:16px; border:1px solid #d5e5e9; border-radius:17px; background:#f7fbfc; }
+.equation-side-input > span { display:flex; align-items:center; gap:8px; margin-bottom:9px; color:#4c6777; font-size:.76rem; font-weight:950; letter-spacing:.04em; text-transform:uppercase; }
+.equation-side-input > span b { display:grid; width:27px; height:27px; place-items:center; border-radius:9px; color:#fff; background:var(--navy-950); }
+.equation-side-input:last-child > span b { background:var(--teal-700); }
+.equation-side-input input { width:100%; height:52px; padding:0 14px; border:2px solid #d0e0e5; border-radius:12px; color:var(--navy-950); background:#fff; font:inherit; font-size:1.08rem; font-weight:800; }
+.equation-side-input input:focus { border-color:var(--teal-500); box-shadow:0 0 0 4px rgba(0,219,200,.13); outline:none; }
+.entry-arrow { display:grid; width:56px; height:56px; place-items:center; border-radius:16px; color:var(--navy-950); background:var(--gold-500); font-size:1.65rem; font-weight:950; }
+.formula-help { margin:10px 2px 0; color:#607986; font-size:.76rem; }
+.example-equations { display:flex; margin-top:15px; align-items:center; flex-wrap:wrap; gap:7px; }
+.example-equations > span { margin-right:2px; color:#56717e; font-size:.75rem; font-weight:850; }
+.example-equations button { padding:7px 10px; border:1px solid #cce2e5; border-radius:999px; color:var(--navy-800); background:#effafa; font:inherit; font-size:.75rem; font-weight:800; cursor:pointer; }
+.example-equations button:hover,.example-equations button:focus-visible { border-color:var(--teal-500); color:var(--navy-950); background:#dffbf7; outline:none; }
+.auto-actions { display:flex; margin-top:18px; gap:9px; }
+.auto-actions button { min-height:48px; padding:11px 20px; border-radius:13px; font:inherit; font-weight:950; cursor:pointer; }
+.auto-balance-button { border:0; color:#fff; background:var(--navy-950); }
+.clear-balance-button { border:1px solid #cddfe4; color:var(--navy-950); background:#fff; }
+.auto-actions button:hover,.auto-actions button:focus-visible { transform:translateY(-2px); box-shadow:0 8px 18px rgba(4,31,45,.15); outline:none; }
+.auto-result { margin-top:15px; padding:17px 19px; border:1px dashed #c4dbe0; border-radius:16px; color:#5d7581; background:#f7fbfc; }
+.auto-result p { margin:0; }
+.auto-result.is-success { border:1px solid #4ad3b2; color:var(--navy-950); background:#effff9; }
+.auto-result.is-error { border:1px solid #ef9696; color:#7d2d38; background:#fff5f5; }
+.auto-result.is-error strong { display:block; margin-bottom:3px; color:#7d2d38; }
+.auto-result-label { display:block; margin-bottom:6px; color:#16876c; font-size:.7rem; font-weight:950; letter-spacing:.08em; text-transform:uppercase; }
+.balanced-output { overflow-wrap:anywhere; font-size:clamp(1.15rem,3vw,1.7rem); font-weight:950; line-height:1.55; }
+.balanced-output sub { font-size:.62em; }
+.result-plus { color:#718993; }
+.result-arrow { margin-inline:7px; color:var(--teal-700); }
+.state-symbol { color:#617985; font-size:.7em; font-weight:750; }
+.atom-checks { display:flex; margin:11px 0 8px; flex-wrap:wrap; gap:6px; }
+.atom-checks span { padding:5px 8px; border-radius:8px; color:#246554; background:#d8f8ec; font-size:.72rem; }
+.atom-checks b { color:var(--navy-950); }
+.auto-result.is-success > p { color:#527267; font-size:.78rem; }
+.condition { color:#667f8b; font-size:.7rem; font-weight:700; }
+
+@media (max-width:760px) {
+  .auto-balancer-shell { padding:18px; }
+  .auto-balancer-heading { align-items:start; flex-direction:column; }
+  .neutral-equations-note { max-width:none; text-align:left; }
+  .balance-visual { height:175px; }
+  .scale-beam { top:55px; width:76%; }
+  .scale-centre { top:34px; }
+  .scale-pan { width:28%; }
+  .scale-pan-left { left:8%; top:108px; }
+  .scale-pan-right { right:8%; top:134px; }
+  .balance-visual.is-balanced .scale-pan-left,.balance-visual.is-balanced .scale-pan-right { top:121px; }
+  .scale-message { display:none; }
+  .equation-entry-grid { grid-template-columns:1fr; gap:9px; }
+  .entry-arrow { width:100%; height:38px; border-radius:11px; transform:rotate(90deg); }
+}
+
+@media print {
+  .auto-balancer-section { display:none!important; }
+}
