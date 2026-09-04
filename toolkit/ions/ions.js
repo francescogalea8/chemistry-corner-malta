@@ -115,7 +115,6 @@ function render(){
   visible.forEach((ion)=>{
     const card=element('button','ion-card '+cardClass(ion));
     card.type='button';
-    card.setAttribute('role','listitem');
     card.setAttribute('aria-label','Open '+ion.name+', '+ion.f);
     const top=element('span');
     top.append(element('span','ion-formula',ion.f),element('span','ion-name',ion.name));
