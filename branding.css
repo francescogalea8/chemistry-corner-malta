@@ -1,6 +1,8 @@
 /* Chemistry Corner Malta — official brand integration */
 
-/* Use the new brand mark wherever the original CC placeholder appeared. */
+/* Compact brand mark in the site header/footer. Keep the adjacent text for
+   readability and accessibility rather than forcing the full horizontal logo
+   into the dark navigation bar. */
 .brand {
   gap: 11px;
 }
@@ -23,46 +25,65 @@
   color: var(--white);
 }
 
-/* Turn the old atom tile in the home hero into an official brand-mark tile. */
+/* Use the official mark as a restrained hero motif on the homepage. */
 .hero-motifs .motif-atom {
   top: 4%;
   right: 10%;
-  width: 112px;
-  height: 112px;
-  border-radius: 28px;
-  background: rgba(255,255,255,.94) url("assets/chemistry-corner-mark.png") center / 88% auto no-repeat !important;
+  width: 108px;
+  height: 108px;
+  border-radius: 27px;
+  background: rgba(255,255,255,.95) url("assets/chemistry-corner-mark.png") center / 86% auto no-repeat !important;
   color: transparent;
   font-size: 0;
   box-shadow: 0 18px 38px rgba(6,27,58,.24);
-  transform: rotate(5deg);
+  transform: rotate(4deg);
 }
 
-/* Show the full logo on light sections, where its navy wordmark stays crisp and readable. */
-.about-copy::before,
-.resources .section-heading > div::before,
-.resource-page-intro::before {
+/* The full wordmark appears once, in the About area, where the pale background
+   gives the navy and teal logo enough contrast. Avoid repeating it above every
+   resources heading. */
+.about-copy::before {
   content: "";
   display: block;
-  width: min(330px, 100%);
-  height: 78px;
-  margin-bottom: 24px;
+  width: min(335px, 100%);
+  height: 80px;
+  margin-bottom: 22px;
   background: url("assets/chemistry-corner-logo.png") left center / contain no-repeat;
 }
 
-.about-copy::before {
-  width: min(370px, 100%);
-  height: 88px;
-  margin-bottom: 28px;
-}
-
-/* The footer keeps the compact mark + name lock-up. */
 .footer-brand .brand-mark {
   width: 45px;
   height: 45px;
   flex-basis: 45px;
 }
 
+/* The Resources page has a second <nav> for category jump-links. The global
+   mobile header-nav rules must never turn that navigation into the floating
+   hamburger panel. */
 @media (max-width: 900px) {
+  .resource-page-main .category-jump-list {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    display: flex !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 9px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: inherit !important;
+  }
+
+  .resource-page-main .category-jump-list a {
+    width: auto !important;
+    padding: 8px 14px !important;
+  }
+
   .brand-mark {
     width: 46px;
     height: 46px;
@@ -92,23 +113,25 @@
   }
 
   .hero-motifs .motif-atom {
-    width: 76px;
-    height: 76px;
-    border-radius: 20px;
+    width: 74px;
+    height: 74px;
+    border-radius: 19px;
     font-size: 0;
   }
 
-  .about-copy::before,
-  .resources .section-heading > div::before,
-  .resource-page-intro::before {
-    width: min(275px, 100%);
-    height: 66px;
-    margin-bottom: 20px;
+  .about-copy::before {
+    width: min(255px, 100%);
+    height: 61px;
+    margin-bottom: 18px;
   }
 
   .footer-brand .brand-mark {
     width: 42px;
     height: 42px;
     flex-basis: 42px;
+  }
+
+  .resource-page-main .category-jump-list {
+    align-items: flex-start !important;
   }
 }
