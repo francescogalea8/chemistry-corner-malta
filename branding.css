@@ -1,0 +1,114 @@
+/* Chemistry Corner Malta — official brand integration */
+
+/* Use the new brand mark wherever the original CC placeholder appeared. */
+.brand {
+  gap: 11px;
+}
+
+.brand-mark {
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  display: block;
+  border-radius: 0;
+  background: url("assets/chemistry-corner-mark.png") center / contain no-repeat;
+  color: transparent;
+  font-size: 0;
+  letter-spacing: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+.brand strong {
+  color: var(--white);
+}
+
+/* Turn the old atom tile in the home hero into an official brand-mark tile. */
+.hero-motifs .motif-atom {
+  top: 4%;
+  right: 10%;
+  width: 112px;
+  height: 112px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.94) url("assets/chemistry-corner-mark.png") center / 88% auto no-repeat !important;
+  color: transparent;
+  font-size: 0;
+  box-shadow: 0 18px 38px rgba(6,27,58,.24);
+  transform: rotate(5deg);
+}
+
+/* Show the full logo on light sections, where its navy wordmark stays crisp and readable. */
+.about-copy::before,
+.resources .section-heading > div::before,
+.resource-page-intro::before {
+  content: "";
+  display: block;
+  width: min(330px, 100%);
+  height: 78px;
+  margin-bottom: 24px;
+  background: url("assets/chemistry-corner-logo.png") left center / contain no-repeat;
+}
+
+.about-copy::before {
+  width: min(370px, 100%);
+  height: 88px;
+  margin-bottom: 28px;
+}
+
+/* The footer keeps the compact mark + name lock-up. */
+.footer-brand .brand-mark {
+  width: 45px;
+  height: 45px;
+  flex-basis: 45px;
+}
+
+@media (max-width: 900px) {
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+}
+
+@media (max-width: 600px) {
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .brand strong {
+    font-size: .9rem;
+  }
+
+  .brand small {
+    margin-top: 4px;
+    font-size: .62rem;
+    letter-spacing: .18em;
+  }
+
+  .hero-motifs .motif-atom {
+    width: 76px;
+    height: 76px;
+    border-radius: 20px;
+    font-size: 0;
+  }
+
+  .about-copy::before,
+  .resources .section-heading > div::before,
+  .resource-page-intro::before {
+    width: min(275px, 100%);
+    height: 66px;
+    margin-bottom: 20px;
+  }
+
+  .footer-brand .brand-mark {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+}
