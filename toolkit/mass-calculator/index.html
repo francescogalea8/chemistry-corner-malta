@@ -8,8 +8,9 @@
   <title>RAM, RMM &amp; RFM Calculator | Chemistry Corner Malta</title>
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../toolkit.css">
+  <link rel="stylesheet" href="mass-practice.css">
 </head>
-<body class="tool-page">
+<body class="tool-page mass-page">
   <a class="skip-link" href="#main">Skip to calculator</a>
   <header class="site-header" id="top">
     <div class="container nav-wrap">
@@ -79,6 +80,60 @@
           </div>
         </div>
         <p class="calculator-note"><strong>Remember:</strong> RAM, RMM and RFM are relative values, so they do not have units. The calculator checks compound type using standard O Level rules and uses commonly rounded atomic masses.</p>
+      </div>
+    </section>
+
+    <section class="mass-practice-section" id="mass-practice">
+      <div class="container">
+        <div class="mass-practice-shell">
+          <div class="print-mass-brand">
+            <img src="../../assets/chemistry-corner-logo.png" alt="Chemistry Corner">
+            <div><strong>Relative Mass Practice</strong><span>Name: ____________________ &nbsp; Date: __________</span></div>
+          </div>
+
+          <div class="mass-practice-heading">
+            <div>
+              <span class="mass-practice-kicker">Practice Studio</span>
+              <h2>Work out RAM, RMM and RFM yourself.</h2>
+              <p>Complete 15 generated questions on screen for a final score, or print the current blank worksheet.</p>
+            </div>
+            <div class="mass-practice-icon" aria-hidden="true">Ar + Σ</div>
+          </div>
+
+          <div class="mass-practice-toolbar">
+            <div>
+              <span class="mass-difficulty-label">Difficulty</span>
+              <div class="mass-difficulty-group" role="group" aria-label="Mass worksheet difficulty">
+                <button type="button" data-mass-difficulty="easy">Easy</button>
+                <button type="button" data-mass-difficulty="medium">Medium</button>
+                <button type="button" data-mass-difficulty="hard">Hard</button>
+                <button class="is-active" type="button" data-mass-difficulty="mixed" aria-pressed="true">Mixed</button>
+              </div>
+            </div>
+            <div class="mass-practice-actions">
+              <button id="mass-practice-print" type="button">Print blank worksheet</button>
+              <button id="mass-practice-new" type="button">Generate new worksheet</button>
+            </div>
+          </div>
+
+          <div class="mass-practice-status">
+            <span id="mass-practice-progress">0 of 15 completed</span>
+            <div class="mass-progress-track" aria-hidden="true"><span id="mass-practice-bar"></span></div>
+          </div>
+
+          <form id="mass-practice-form" novalidate>
+            <ol class="mass-practice-list" id="mass-practice-list"></ol>
+            <div class="mass-practice-submit-row">
+              <div>
+                <strong>Answers remain hidden until submission</strong>
+                <p>Complete every box to unlock your score and the full working.</p>
+              </div>
+              <button class="mass-practice-submit" id="mass-practice-submit" type="submit" disabled>Check all answers</button>
+            </div>
+          </form>
+
+          <section class="mass-practice-score" id="mass-practice-score" aria-live="polite" hidden></section>
+        </div>
         <a class="back-link" href="../"><span aria-hidden="true">←</span> Back to Chemistry Toolkit</a>
       </div>
     </section>
@@ -94,5 +149,6 @@
     </div>
   </footer>
   <script src="../../script.js"></script>
+  <script src="mass-practice.js"></script>
 </body>
 </html>
