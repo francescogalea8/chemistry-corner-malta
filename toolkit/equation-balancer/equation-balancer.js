@@ -83,10 +83,15 @@ const productsInput = document.querySelector("#products-input");
 const autoResult = document.querySelector("#auto-balance-result");
 const clearAutoButton = document.querySelector("#clear-auto-balance");
 const balanceVisual = document.querySelector("#balance-visual");
+const manualWorkbench = document.querySelector("#manual-workbench");
+const manualEquation = document.querySelector("#manual-equation");
+const imbalanceReport = document.querySelector("#imbalance-report");
+const checkManualButton = document.querySelector("#check-manual-balance");
 
 let difficulty = "mixed";
 let worksheet = [];
 let submitted = false;
+let manualSignature = "";
 
 function q(left, right, coefficients, type, condition = "") {
   return { left, right, coefficients, type, condition };
@@ -230,10 +235,128 @@ function setScaleState(state, leftCount = "", rightCount = "", message = "") {
   scaleMessage.textContent = message || "Atoms must match on both sides";
 }
 
+function compareAtomCounts(leftCounts, rightCounts) {
+  const elements = [...new Set([...Object.keys(leftCounts), ...Object.keys(rightCounts)])].sort();
+  let leftExcess = 0;
+  let rightExcess = 0;
+  const rows = elements.map(element => {
+    const left = leftCounts[element] || 0;
+    const right = rightCounts[element] || 0;
+    const difference = left - right;
+    if (difference > 0) leftExcess += difference;
+    if (difference < 0) rightExcess += -difference;
+    return { element, left, right, difference, matches: difference === 0 };
+  });
+  return {
+    rows,
+    leftExcess,
+    rightExcess,
+    matches: rows.length > 0 && rows.every(row => row.matches),
+    leftTotal: totalAtoms(leftCounts),
+    rightTotal: totalAtoms(rightCounts)
+  };
+}
+
+function manualCompoundMarkup(compound, index) {
+  return `<label class="manual-compound">
+    <span class="sr-only">Coefficient for ${compound.formula}</span>
+    <input class="manual-coefficient" type="number" inputmode="numeric" min="1" max="999" step="1" value="${compound.enteredCoefficient}" data-manual-index="${index}" aria-label="Coefficient for ${compound.formula}">
+    <span class="manual-formula">${formatFormula(compound.formula, compound.state)}</span>
+  </label>`;
+}
+
+function syncManualEquation(reactants, products, force = false) {
+  const signature = `${reactants.map(item => item.formula + item.state).join("+")}->${products.map(item => item.formula + item.state).join("+")}`;
+  if (!force && signature === manualSignature && !manualWorkbench.hidden) return;
+  manualSignature = signature;
+  let index = 0;
+  const left = reactants.map(compound => manualCompoundMarkup(compound, index++)).join('<span class="manual-operator" aria-hidden="true">+</span>');
+  const right = products.map(compound => manualCompoundMarkup(compound, index++)).join('<span class="manual-operator" aria-hidden="true">+</span>');
+  manualEquation.innerHTML = `<span class="manual-side" aria-label="Reactants">${left}</span><span class="manual-arrow" aria-hidden="true">→</span><span class="manual-side" aria-label="Products">${right}</span>`;
+  manualWorkbench.hidden = false;
+  manualEquation.querySelectorAll(".manual-coefficient").forEach(input => {
+    input.addEventListener("input", () => updateManualBalance());
+  });
+}
+
+function readManualCoefficients() {
+  const inputs = [...manualEquation.querySelectorAll(".manual-coefficient")];
+  const values = inputs.map(input => Number(input.value));
+  if (!inputs.length || values.some(value => !Number.isInteger(value) || value < 1 || value > 999)) {
+    throw new Error("Enter a positive whole number in every coefficient box.");
+  }
+  return values;
+}
+
+function setScaleFromComparison(comparison) {
+  if (comparison.matches) {
+    setScaleState("is-balanced", comparison.leftTotal, comparison.rightTotal, "Every element matches — balanced!");
+    return;
+  }
+  if (comparison.leftExcess > comparison.rightExcess) {
+    const tilt = Math.min(10, 3 + comparison.leftExcess - comparison.rightExcess);
+    setScaleState("is-unbalanced leans-left", comparison.leftTotal, comparison.rightTotal, "Reactants have the greater unmatched-atom total");
+    balanceVisual.style.setProperty("--beam-tilt", `-${tilt}deg`);
+    return;
+  }
+  if (comparison.rightExcess > comparison.leftExcess) {
+    const tilt = Math.min(10, 3 + comparison.rightExcess - comparison.leftExcess);
+    setScaleState("is-unbalanced leans-right", comparison.leftTotal, comparison.rightTotal, "Products have the greater unmatched-atom total");
+    balanceVisual.style.setProperty("--beam-tilt", `${tilt}deg`);
+    return;
+  }
+  setScaleState("has-error equal-but-different", comparison.leftTotal, comparison.rightTotal, "The total mismatch is equal, but the elements do not match");
+}
+
+function renderAtomComparison(comparison) {
+  if (comparison.matches) {
+    const matches = comparison.rows.map(row =>
+      `<span class="atom-result is-match"><b>${row.element}</b><small>Reactants ${row.left} · Products ${row.right}</small><em>Matches</em></span>`
+    ).join("");
+    imbalanceReport.className = "imbalance-report is-balanced";
+    imbalanceReport.innerHTML = `<div class="report-heading"><strong>Balanced</strong><span>Every element has the same number of atoms on both sides.</span></div><div class="atom-result-grid">${matches}</div>`;
+    return;
+  }
+
+  const mismatches = comparison.rows.filter(row => !row.matches).map(row => {
+    const side = row.difference > 0 ? "reactants" : "products";
+    const extra = Math.abs(row.difference);
+    return `<span class="atom-result is-mismatch"><b>${row.element}</b><small>Reactants ${row.left} · Products ${row.right}</small><em>${extra} more on ${side}</em></span>`;
+  }).join("");
+  let summary = "Both sides have the same total mismatch, but different elements are unmatched.";
+  if (comparison.leftExcess > comparison.rightExcess) summary = `The reactant side has the greater unmatched-atom total (${comparison.leftExcess} versus ${comparison.rightExcess}).`;
+  if (comparison.rightExcess > comparison.leftExcess) summary = `The product side has the greater unmatched-atom total (${comparison.rightExcess} versus ${comparison.leftExcess}).`;
+  imbalanceReport.className = "imbalance-report is-unbalanced";
+  imbalanceReport.innerHTML = `<div class="report-heading"><strong>Still unbalanced</strong><span>${summary}</span></div><div class="atom-result-grid">${mismatches}</div>`;
+}
+
+function updateManualBalance({ announce = false } = {}) {
+  try {
+    const reactants = splitEquationSide(reactantsInput.value, "reactants");
+    const products = splitEquationSide(productsInput.value, "products");
+    syncManualEquation(reactants, products);
+    const coefficients = readManualCoefficients();
+    const leftCounts = sideAtomCounts(reactants, coefficients, 0);
+    const rightCounts = sideAtomCounts(products, coefficients, reactants.length);
+    const comparison = compareAtomCounts(leftCounts, rightCounts);
+    setScaleFromComparison(comparison);
+    renderAtomComparison(comparison);
+    if (announce) imbalanceReport.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return comparison;
+  } catch (error) {
+    setScaleState("", "", "", "Complete the coefficient boxes to test the balance");
+    imbalanceReport.className = "imbalance-report has-error";
+    imbalanceReport.innerHTML = `<p><strong>Check your coefficients.</strong> ${error.message}</p>`;
+    return null;
+  }
+}
+
 function updateLiveScale() {
   autoResult.className = "auto-result";
-  autoResult.innerHTML = "<p>When ready, select <strong>Auto balance</strong> to calculate the coefficients.</p>";
+  autoResult.innerHTML = "<p>Adjust the coefficient boxes, or select <strong>Show balanced answer</strong> when you need the solution.</p>";
   if (!reactantsInput.value.trim() || !productsInput.value.trim()) {
+    manualWorkbench.hidden = true;
+    manualSignature = "";
     setScaleState("", "", "", "Enter both sides to test the balance");
     return;
   }
@@ -241,35 +364,11 @@ function updateLiveScale() {
   try {
     const reactants = splitEquationSide(reactantsInput.value, "reactants");
     const products = splitEquationSide(productsInput.value, "products");
-    const leftCounts = sideAtomCounts(reactants);
-    const rightCounts = sideAtomCounts(products);
-    const elements = new Set([...Object.keys(leftCounts), ...Object.keys(rightCounts)]);
-    let leftExcess = 0;
-    let rightExcess = 0;
-    let matches = true;
-    elements.forEach(element => {
-      const difference = (leftCounts[element] || 0) - (rightCounts[element] || 0);
-      if (difference !== 0) matches = false;
-      if (difference > 0) leftExcess += difference;
-      if (difference < 0) rightExcess += -difference;
-    });
-    const leftTotal = totalAtoms(leftCounts);
-    const rightTotal = totalAtoms(rightCounts);
-
-    if (matches) {
-      setScaleState("is-balanced", leftTotal, rightTotal, "Every element matches — balanced!");
-    } else if (leftExcess > rightExcess) {
-      const tilt = Math.min(9, 3 + (leftExcess - rightExcess));
-      setScaleState("is-unbalanced leans-left", leftTotal, rightTotal, "Reactant side has the greater atom excess");
-      balanceVisual.style.setProperty("--beam-tilt", `-${tilt}deg`);
-    } else if (rightExcess > leftExcess) {
-      const tilt = Math.min(9, 3 + (rightExcess - leftExcess));
-      setScaleState("is-unbalanced leans-right", leftTotal, rightTotal, "Product side has the greater atom excess");
-      balanceVisual.style.setProperty("--beam-tilt", `${tilt}deg`);
-    } else {
-      setScaleState("has-error equal-but-different", leftTotal, rightTotal, "Equal total atoms, but individual elements do not match");
-    }
+    syncManualEquation(reactants, products, true);
+    updateManualBalance();
   } catch {
+    manualWorkbench.hidden = true;
+    manualSignature = "";
     setScaleState("", "", "", "Finish entering valid formulae to test the balance");
   }
 }
@@ -378,6 +477,11 @@ function balanceTypedEquation() {
       return index < reactants.length ? count : -count;
     }));
     const coefficients = integerNullVector(matrix);
+    syncManualEquation(reactants, products);
+    [...manualEquation.querySelectorAll(".manual-coefficient")].forEach((input, index) => {
+      input.value = coefficients[index].toString();
+    });
+    updateManualBalance();
     const atomRows = elements.map(element => {
       const leftTotal = reactants.reduce((sum, compound, index) => sum + BigInt(compound.atoms[element] || 0) * coefficients[index], 0n);
       const rightTotal = products.reduce((sum, compound, index) => sum + BigInt(compound.atoms[element] || 0) * coefficients[index + reactants.length], 0n);
@@ -400,6 +504,10 @@ function clearTypedEquation() {
   autoForm.reset();
   autoResult.className = "auto-result";
   autoResult.innerHTML = "<p>Enter both sides of an equation, then select <strong>Auto balance</strong>.</p>";
+  manualWorkbench.hidden = true;
+  manualEquation.innerHTML = "";
+  imbalanceReport.innerHTML = "";
+  manualSignature = "";
   setScaleState("", "", "", "Enter both sides to test the balance");
   reactantsInput.focus();
 }
@@ -419,7 +527,7 @@ function buildWorksheet(level) {
       ...shuffle(questionBank.easy).slice(0, 5).map(item => ({ ...item, level: "Easy" })),
       ...shuffle(questionBank.medium).slice(0, 5).map(item => ({ ...item, level: "Medium" })),
       ...shuffle(questionBank.hard).slice(0, 5).map(item => ({ ...item, level: "Hard" }))
-    ].sort(() => Math.random() - 0.5);
+    ];
   }
   return shuffle(questionBank[level]).slice(0, QUESTION_COUNT).map(item => ({
     ...item,
@@ -501,13 +609,14 @@ function checkAnswers() {
       score += 1;
       card.classList.add("is-correct");
       state.textContent = "Correct";
+      card.insertAdjacentHTML("beforeend", `<p class="correction is-correct-answer"><strong>Balanced equation: ${correctEquation(question)}</strong><br>Correct — every element matches in the smallest whole-number ratio. Reaction type: ${question.type}.</p>`);
     } else {
       card.classList.add("is-incorrect");
       state.textContent = "Review";
       const reason = sameRatio && simplest(values) > 1
         ? "Your ratio is balanced, but it must be reduced to the smallest whole numbers."
         : "Check that every element has the same atom count on both sides.";
-      card.insertAdjacentHTML("beforeend", `<p class="correction"><strong>Correct answer: ${correctEquation(question)}</strong><br>${reason} Reaction type: ${question.type}.</p>`);
+      card.insertAdjacentHTML("beforeend", `<p class="correction"><strong>Balanced equation: ${correctEquation(question)}</strong><br>${reason} Reaction type: ${question.type}.</p>`);
     }
   });
 
@@ -543,6 +652,7 @@ autoForm.addEventListener("submit", event => {
   balanceTypedEquation();
 });
 clearAutoButton.addEventListener("click", clearTypedEquation);
+checkManualButton.addEventListener("click", () => updateManualBalance({ announce: true }));
 reactantsInput.addEventListener("input", updateLiveScale);
 productsInput.addEventListener("input", updateLiveScale);
 document.querySelectorAll("[data-reactants][data-products]").forEach(button => {
