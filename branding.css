@@ -135,3 +135,25 @@
     align-items: flex-start !important;
   }
 }
+
+/* Make the complete Chemistry Corner identity the first visual on the homepage. */
+.hero-brand-logo {
+  display: block;
+  width: min(370px, 64vw);
+  height: auto;
+  margin: 0 0 24px;
+  padding: 13px 17px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 18px 44px rgba(6,27,58,.26);
+}
+.hero-motifs .motif-atom { display: none; }
+
+@media (max-width: 600px) {
+  .hero-brand-logo {
+    width: min(285px, 78vw);
+    margin-bottom: 20px;
+    padding: 10px 13px;
+    border-radius: 16px;
+  }
+}
