@@ -397,3 +397,215 @@
   .balance-visual.leans-right .scale-pan-left { top:108px; }
   .balance-visual.leans-right .scale-pan-right { top:134px; }
 }
+
+
+/* Manual coefficient workbench */
+.manual-workbench {
+  margin-top:18px;
+  padding:18px;
+  border:2px solid #bfe8e3;
+  border-radius:20px;
+  background:linear-gradient(145deg,#f3fffc,#f8fcfd);
+}
+.manual-workbench[hidden] { display:none; }
+.manual-workbench-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+}
+.manual-workbench-head h3 {
+  margin:4px 0;
+  color:var(--navy-950);
+  font-size:1.18rem;
+}
+.manual-workbench-head p {
+  margin:0;
+  color:#5c7581;
+  font-size:.8rem;
+}
+.manual-kicker {
+  color:var(--teal-700);
+  font-size:.67rem;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.manual-workbench-head button {
+  min-height:43px;
+  padding:9px 15px;
+  flex:0 0 auto;
+  border:0;
+  border-radius:11px;
+  color:#fff;
+  background:var(--teal-700);
+  font:inherit;
+  font-size:.8rem;
+  font-weight:900;
+  cursor:pointer;
+}
+.manual-workbench-head button:hover,
+.manual-workbench-head button:focus-visible {
+  transform:translateY(-2px);
+  box-shadow:0 8px 17px rgba(4,31,45,.15);
+  outline:none;
+}
+.manual-equation {
+  display:flex;
+  margin-top:16px;
+  padding:18px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  border:1px solid #d3e8e8;
+  border-radius:16px;
+  background:#fff;
+}
+.manual-side {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.manual-compound {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:var(--navy-950);
+  font-size:1.06rem;
+  font-weight:900;
+  white-space:nowrap;
+}
+.manual-coefficient {
+  width:46px;
+  height:42px;
+  padding:0 4px;
+  border:2px solid #9bcfd0;
+  border-radius:10px;
+  color:var(--navy-950);
+  background:#effcf9;
+  text-align:center;
+  font:inherit;
+  font-weight:950;
+  -moz-appearance:textfield;
+}
+.manual-coefficient::-webkit-outer-spin-button,
+.manual-coefficient::-webkit-inner-spin-button {
+  margin:0;
+  -webkit-appearance:none;
+}
+.manual-coefficient:focus {
+  border-color:var(--gold-500);
+  box-shadow:0 0 0 4px rgba(255,211,90,.22);
+  outline:none;
+}
+.manual-formula sub { font-size:.63em; }
+.manual-operator {
+  color:#6d8792;
+  font-weight:950;
+}
+.manual-arrow {
+  color:var(--teal-700);
+  font-size:1.6rem;
+  font-weight:950;
+}
+.imbalance-report {
+  margin-top:12px;
+  padding:14px;
+  border-radius:14px;
+  background:#fff;
+}
+.report-heading {
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:6px 12px;
+}
+.report-heading strong {
+  color:var(--navy-950);
+  font-size:.94rem;
+}
+.report-heading span {
+  color:#5c7581;
+  font-size:.78rem;
+}
+.atom-result-grid {
+  display:grid;
+  margin-top:10px;
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+  gap:7px;
+}
+.atom-result {
+  display:grid;
+  padding:9px 10px;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:1px 8px;
+  border:1px solid #d6e5e8;
+  border-radius:11px;
+  background:#f7fbfc;
+}
+.atom-result b {
+  grid-row:1 / 3;
+  color:var(--navy-950);
+  font-size:1.15rem;
+}
+.atom-result small {
+  color:#5b7480;
+  font-size:.68rem;
+}
+.atom-result em {
+  color:#6c818a;
+  font-size:.68rem;
+  font-style:normal;
+  font-weight:850;
+}
+.atom-result.is-match {
+  border-color:#7cd9bd;
+  background:#effff8;
+}
+.atom-result.is-match em { color:#087055; }
+.atom-result.is-mismatch {
+  border-color:#f2a4a4;
+  background:#fff5f5;
+}
+.atom-result.is-mismatch em { color:#a3303e; }
+.imbalance-report.is-balanced { border:1px solid #62d2ae; }
+.imbalance-report.is-unbalanced { border:1px solid #ef9b9b; }
+.imbalance-report.has-error {
+  border:1px solid #ef9b9b;
+  color:#7d2d38;
+  background:#fff5f5;
+}
+.imbalance-report.has-error p { margin:0; font-size:.8rem; }
+.correction.is-correct-answer {
+  border-left-color:#2fc69c;
+  color:#355f54;
+  background:#f8fffc;
+}
+
+@media (max-width:760px) {
+  .manual-workbench { padding:14px; }
+  .manual-workbench-head {
+    align-items:stretch;
+    flex-direction:column;
+    gap:12px;
+  }
+  .manual-workbench-head button { width:100%; }
+  .manual-equation {
+    padding:14px 9px;
+    gap:8px;
+  }
+  .manual-arrow {
+    width:100%;
+    text-align:center;
+  }
+  .manual-compound { font-size:.94rem; }
+  .manual-coefficient {
+    width:40px;
+    height:38px;
+  }
+  .atom-result-grid { grid-template-columns:1fr; }
+}
