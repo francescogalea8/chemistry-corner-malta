@@ -305,3 +305,188 @@
   .ion-facts > div, .ion-facts > div:nth-child(odd) { border-right: 0; border-bottom: 1px solid #e4eef0; }
   .ion-facts > div:last-child { border-bottom: 0; }
 }
+
+
+/* Printable ions guide */
+.ions-print-tools {
+  display:grid;
+  margin:0 0 18px;
+  padding:16px 18px;
+  grid-template-columns:minmax(0,1fr) minmax(190px,250px) auto;
+  align-items:center;
+  gap:14px;
+  border:1px solid #cfe2e7;
+  border-radius:17px;
+  background:linear-gradient(135deg,#fff9d9,#effffc);
+  box-shadow:0 9px 24px rgba(4,31,45,.06);
+}
+.ions-print-tools > div > span {
+  color:var(--teal-700);
+  font-size:.66rem;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.ions-print-tools h2 {
+  margin:3px 0;
+  color:var(--navy-950);
+  font-size:1.08rem;
+}
+.ions-print-tools p {
+  margin:0;
+  color:#607985;
+  font-size:.75rem;
+}
+.ions-print-tools select,
+.ions-print-tools button {
+  width:100%;
+  min-height:43px;
+  padding:9px 12px;
+  border:1px solid #c6dce0;
+  border-radius:11px;
+  color:var(--navy-950);
+  background:#fff;
+  font:inherit;
+  font-size:.78rem;
+  font-weight:850;
+}
+.ions-print-tools button {
+  border-color:var(--navy-950);
+  color:#fff;
+  background:var(--navy-950);
+  cursor:pointer;
+}
+.ions-print-tools button:hover,
+.ions-print-tools button:focus-visible {
+  transform:translateY(-2px);
+  box-shadow:0 8px 17px rgba(4,31,45,.15);
+  outline:none;
+}
+.ion-print-sheet {
+  display:none;
+}
+
+@media (max-width:760px) {
+  .ions-print-tools {
+    grid-template-columns:1fr;
+    align-items:stretch;
+  }
+}
+
+@media print {
+  @page { size:A4 portrait; margin:12mm; }
+  .ions-page .site-header,
+  .ions-page .ions-intro,
+  .ions-page .ions-controls,
+  .ions-page .ions-summary,
+  .ions-page .ions-print-tools,
+  .ions-page .ions-grid,
+  .ions-page .ions-empty,
+  .ions-page .ions-learning-note,
+  .ions-page .ions-actions,
+  .ions-page .ion-dialog,
+  .ions-page footer {
+    display:none!important;
+  }
+  .ions-page,
+  .ions-page .subpage-main,
+  .ions-page .ions-workspace {
+    color:#111!important;
+    background:#fff!important;
+  }
+  .ions-page .ions-workspace { padding:0; }
+  .ions-page .ions-container {
+    width:100%;
+    max-width:none;
+  }
+  .ion-print-sheet {
+    display:block!important;
+  }
+  .ion-print-brand {
+    display:flex;
+    margin-bottom:8mm;
+    padding-bottom:5mm;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    border-bottom:2px solid #0aa99f;
+  }
+  .ion-print-brand img {
+    width:58mm;
+    max-height:18mm;
+    object-fit:contain;
+    object-position:left center;
+  }
+  .ion-print-brand div { text-align:right; }
+  .ion-print-brand strong {
+    display:block;
+    color:#061b3a;
+    font-size:16pt;
+  }
+  .ion-print-brand span {
+    color:#555;
+    font-size:9pt;
+  }
+  .ion-print-section.starts-new-page {
+    break-before:page;
+  }
+  .ion-print-section-heading {
+    margin-bottom:4mm;
+  }
+  .ion-print-section-heading span {
+    color:#078c84;
+    font-size:8pt;
+    font-weight:900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .ion-print-section-heading h2 {
+    margin:1mm 0 0;
+    color:#061b3a;
+    font-size:15pt;
+  }
+  .ion-print-grid {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:3mm;
+  }
+  .print-ion-card {
+    min-height:29mm;
+    padding:3mm;
+    border:1px solid #8ca4ab;
+    border-radius:2.5mm;
+    break-inside:avoid;
+    background:#fff;
+  }
+  .print-ion-top {
+    display:flex;
+    align-items:start;
+    justify-content:space-between;
+    gap:6px;
+  }
+  .print-ion-formula {
+    color:#061b3a;
+    font-size:17pt;
+  }
+  .print-ion-charge {
+    padding:1mm 1.5mm;
+    border-radius:2mm;
+    color:#061b3a;
+    background:#ffd35a!important;
+    font-size:8pt;
+    font-weight:900;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  .print-ion-card h3 {
+    margin:2mm 0 1mm;
+    color:#061b3a;
+    font-size:9.5pt;
+  }
+  .print-ion-card p {
+    margin:0;
+    color:#444;
+    font-size:7.5pt;
+    line-height:1.35;
+  }
+}
