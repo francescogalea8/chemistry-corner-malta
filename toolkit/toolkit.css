@@ -231,3 +231,70 @@ a.tool-card:hover, a.tool-card:focus-visible {
   background: var(--navy-950);
 }
 .equation-card .tool-card-action { color: var(--navy-950); }
+
+
+/* Clear tool identities and a wide coming-soon preview. */
+.tool-status {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 20px;
+  padding: 7px 11px;
+  border: 1px solid rgba(6,27,58,.13);
+  border-radius: 999px;
+  color: var(--navy-900);
+  background: rgba(255,255,255,.72);
+  font-size: .73rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.tool-card-icon.mass-icon {
+  font-size: .9rem;
+  letter-spacing: -.04em;
+}
+.tool-card-icon.element-icon {
+  position: relative;
+  padding-top: 11px;
+  font-size: 1.22rem;
+}
+.tool-card-icon.element-icon small {
+  position: absolute;
+  top: 5px;
+  left: 7px;
+  font-size: .43rem;
+  font-weight: 900;
+}
+.tool-card.reaction-card {
+  grid-column: 1 / -1;
+  min-height: 230px;
+  color: var(--white);
+  border-color: rgba(255,255,255,.16);
+  background:
+    radial-gradient(circle at 84% 28%, rgba(69,244,223,.23), transparent 17rem),
+    linear-gradient(135deg, var(--navy-950), #0b4566);
+}
+.reaction-card .tool-card-icon {
+  width: auto;
+  min-width: 62px;
+  padding: 0 13px;
+  color: var(--navy-950);
+  background: var(--teal-400);
+  font-size: .82rem;
+}
+.reaction-card .tool-status {
+  color: var(--white);
+  border-color: rgba(255,255,255,.24);
+  background: rgba(255,255,255,.11);
+}
+.reaction-card .tool-card-action { color: var(--gold-500); }
+.coming-soon-card { cursor: default; }
+.coming-soon-card:hover {
+  transform: none;
+  border-color: rgba(255,255,255,.16);
+  box-shadow: 0 18px 50px rgba(4,31,45,.09);
+}
+
+@media (max-width: 900px) {
+  .tool-card.reaction-card { grid-column: auto; }
+}
