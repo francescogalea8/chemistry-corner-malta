@@ -74,6 +74,34 @@
           <p id="result-count"></p>
         </div>
 
+        <section class="ions-print-tools" aria-labelledby="ions-print-title">
+          <div>
+            <span>Printable reference</span>
+            <h2 id="ions-print-title">Create a sectioned ions sheet</h2>
+            <p>Choose one category or print the complete guide.</p>
+          </div>
+          <label>
+            <span class="sr-only">Ion section to print</span>
+            <select id="ion-print-category">
+              <option value="current">Current section</option>
+              <option value="polyatomic">Polyatomic ions only</option>
+              <option value="monatomic">Monatomic ions only</option>
+              <option value="transition">Transition-metal ions only</option>
+              <option value="organic">Organic and special ions only</option>
+              <option value="all">All ion sections</option>
+            </select>
+          </label>
+          <button id="print-ions" type="button">Print ion sheet</button>
+        </section>
+
+        <div class="ion-print-sheet" id="ion-print-sheet" aria-hidden="true">
+          <header class="ion-print-brand">
+            <img src="../../assets/chemistry-corner-logo.png" alt="Chemistry Corner">
+            <div><strong>Ions Reference Guide</strong><span>O Level Chemistry</span></div>
+          </header>
+          <div id="ion-print-content"></div>
+        </div>
+
         <div class="ions-grid" id="ions-grid"></div>
         <div class="ions-empty" id="ions-empty" hidden>
           <strong>No matching ions found</strong>
