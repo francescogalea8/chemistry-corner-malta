@@ -39,7 +39,7 @@
           <div>
             <p class="eyebrow dark"><span></span><b aria-hidden="true">⚖</b> Interactive worksheet</p>
             <h1>Balance 15 chemical equations</h1>
-            <p>Enter the smallest whole-number coefficient in every box. Your answers stay hidden until you complete and submit the entire worksheet.</p>
+            <p>Work through five easy, five medium and five hard equations. Enter the smallest whole-number coefficient in every box; answers stay hidden until the complete worksheet is submitted.</p>
           </div>
           <div class="balance-example" aria-hidden="true">
             <span><b>2</b>H₂ + O₂</span>
@@ -56,18 +56,18 @@
           <div class="auto-balancer-heading">
             <div>
               <span class="auto-kicker">Auto Balancer</span>
-              <h2>Type an equation. We’ll balance it.</h2>
-              <p>Enter the correct reactant and product formulae. The calculator will find the smallest whole-number coefficients and verify every atom.</p>
+              <h2>Build it. Test it. Balance it.</h2>
+              <p>Enter the reactant and product formulae, adjust the coefficient boxes yourself and watch the scale respond. When needed, reveal the smallest whole-number solution.</p>
             </div>
             <span class="neutral-equations-note">Neutral equations · brackets and hydrates supported</span>
           </div>
 
-          <div class="balance-visual" id="balance-visual" aria-hidden="true">
+          <div class="balance-visual" id="balance-visual" role="img" aria-labelledby="scale-message">
             <div class="scale-beam"><span></span><span></span></div>
             <div class="scale-centre"><i></i></div>
             <div class="scale-pan scale-pan-left"></div>
             <div class="scale-pan scale-pan-right"></div>
-            <strong class="scale-message">Atoms must match on both sides</strong>
+            <strong class="scale-message" id="scale-message">Atoms must match on both sides</strong>
           </div>
 
           <form id="auto-balance-form" class="auto-balance-form" novalidate>
@@ -89,8 +89,20 @@
               <button type="button" data-reactants="Fe + O2" data-products="Fe2O3">Fe + O₂ → Fe₂O₃</button>
               <button type="button" data-reactants="C3H8 + O2" data-products="CO2 + H2O">C₃H₈ + O₂ → CO₂ + H₂O</button>
             </div>
+            <section class="manual-workbench" id="manual-workbench" hidden aria-labelledby="manual-workbench-title">
+              <div class="manual-workbench-head">
+                <div>
+                  <span class="manual-kicker">Your coefficients</span>
+                  <h3 id="manual-workbench-title">Make both sides match</h3>
+                  <p>Change the numbers in the boxes. The scale and atom comparison update immediately.</p>
+                </div>
+                <button id="check-manual-balance" type="button">Check my balance</button>
+              </div>
+              <div class="manual-equation" id="manual-equation"></div>
+              <div class="imbalance-report" id="imbalance-report" aria-live="polite"></div>
+            </section>
             <div class="auto-actions">
-              <button class="auto-balance-button" type="submit">Auto balance</button>
+              <button class="auto-balance-button" type="submit">Show balanced answer</button>
               <button class="clear-balance-button" id="clear-auto-balance" type="button">Clear</button>
             </div>
             <div class="auto-result" id="auto-balance-result" aria-live="polite">
