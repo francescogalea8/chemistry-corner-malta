@@ -74,6 +74,10 @@ const empty=document.querySelector('#ions-empty');
 const dialog=document.querySelector('#ion-dialog');
 const detail=document.querySelector('#ion-detail');
 const closeButton=document.querySelector('#ion-dialog-close');
+const printCategorySelect=document.querySelector('#ion-print-category');
+const printIonsButton=document.querySelector('#print-ions');
+const ionPrintSheet=document.querySelector('#ion-print-sheet');
+const ionPrintContent=document.querySelector('#ion-print-content');
 let activeCategory='monatomic';
 
 function element(tag,className,text){
@@ -222,6 +226,37 @@ function openIon(ion){
   detail.replaceChildren(head,layout,note,source);
   dialog.showModal();
 }
+
+function printableIonCard(ion){
+  const card=element('article','print-ion-card');
+  const top=element('div','print-ion-top');
+  top.append(element('strong','print-ion-formula',ion.f),element('span','print-ion-charge',ion.charge));
+  card.append(top,element('h3','',ion.name),element('p','',ion.kind+' · '+ion.compound));
+  return card;
+}
+
+function buildIonPrintSheet(selection){
+  const requested=selection==='current'?activeCategory:selection;
+  const categories=requested==='all'?['monatomic','transition','polyatomic','organic']:[requested];
+  ionPrintContent.replaceChildren();
+  categories.forEach((category,index)=>{
+    const section=element('section','ion-print-section');
+    if(index>0) section.classList.add('starts-new-page');
+    const heading=element('div','ion-print-section-heading');
+    heading.append(element('span','',categoryDetails[category].label),element('h2','',categoryDetails[category].title));
+    const cards=element('div','ion-print-grid');
+    ions.filter(ion=>ion.cat===category).forEach(ion=>cards.append(printableIonCard(ion)));
+    section.append(heading,cards);
+    ionPrintContent.append(section);
+  });
+}
+
+printIonsButton.addEventListener('click',()=>{
+  buildIonPrintSheet(printCategorySelect.value);
+  ionPrintSheet.setAttribute('aria-hidden','false');
+  window.print();
+});
+window.addEventListener('afterprint',()=>ionPrintSheet.setAttribute('aria-hidden','true'));
 
 tabs.forEach((tab,index)=>{
   tab.addEventListener('click',()=>{
